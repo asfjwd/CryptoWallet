@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "160391500305",
+    "firebase_url": "https://cryptowallet-97f03-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "cryptowallet-97f03",
+    "storage_bucket": "cryptowallet-97f03.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:160391500305:android:2a5bcc3fe83c0aeba657b0",
+        "android_client_info": {
+          "package_name": "com.cse2216.cryptowallet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "160391500305-3tnt1ijafkv42ghl3o0fbrntc930tnir.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDABBPytR9v9TtgaFocHzIpx53pb30AGAY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "160391500305-3tnt1ijafkv42ghl3o0fbrntc930tnir.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
