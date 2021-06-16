@@ -1,10 +1,11 @@
-package com.cse2216.cryptowallet;
+package com.cse2216.cryptowallet.activities;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import com.cse2216.cryptowallet.R;
 import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
