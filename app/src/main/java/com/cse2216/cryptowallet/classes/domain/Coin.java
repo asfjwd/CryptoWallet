@@ -4,7 +4,7 @@ public class Coin {
     private String name ;
     private String key ;
     private Integer coinId ;
-    private Double last_transaction_price ;
+    private Double latest_price;
     private Double volume ;
     private Double change ;
     public Coin(){}
@@ -12,7 +12,7 @@ public class Coin {
         this.name = name;
         this.coinId = coinId;
         this.key = key;
-        this.last_transaction_price = last_transaction_price;
+        this.latest_price = last_transaction_price;
         this.volume = volume;
         this.change = change;
     }
@@ -41,12 +41,12 @@ public class Coin {
         this.key = key;
     }
 
-    public Double getLast_transaction_price() {
-        return last_transaction_price;
+    public Double getLatest_price() {
+        return latest_price;
     }
 
-    public void setLast_transaction_price(Double last_transaction_price) {
-        this.last_transaction_price = last_transaction_price;
+    public void setLatest_price(Double latest_price) {
+        this.latest_price = latest_price;
     }
 
     public Double getVolume() {
