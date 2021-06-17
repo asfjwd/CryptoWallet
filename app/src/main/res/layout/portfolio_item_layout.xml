@@ -35,13 +35,13 @@
             <TextView
                 android:layout_width="70dp"
                 android:layout_height="22dp"
+                android:id="@+id/currency_name"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="2dp"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:gravity="center_horizontal"
-                android:text="bitcoin">
+                android:gravity="center_horizontal">
             </TextView>
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="match_parent"

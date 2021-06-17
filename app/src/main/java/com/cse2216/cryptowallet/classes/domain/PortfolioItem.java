@@ -1,15 +1,15 @@
 package com.cse2216.cryptowallet.classes.domain;
 
 public class PortfolioItem extends Coin {
-    private Integer quantity ;
-    private Double buyingPrice ;
+    private Double position;
+    private Double buyingPrice;
 
     public PortfolioItem() {
     }
 
-    public PortfolioItem(String name, String key, Integer coinId, Double last_transaction_price, Double volume, Double change, Integer quantity, Double buyingPrice) {
-        super(name, key, coinId, last_transaction_price, volume, change);
-        this.quantity = quantity;
+    public PortfolioItem(String name, String key, Integer coinId, Double latestPrice, Double volume, Double change, Double position, Double buyingPrice) {
+        super(name, key, coinId, latestPrice, volume, change);
+        this.position = position;
         this.buyingPrice = buyingPrice;
     }
 
@@ -21,13 +21,19 @@ public class PortfolioItem extends Coin {
         this.buyingPrice = buyingPrice;
     }
 
-    public Integer getQuantity() {
-        return quantity;
+    public Double getPosition() {
+        return position;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setPosition(Integer quantity) {
+        this.position = position;
     }
 
+    public Double getGain(){
+        return (buyingPrice - getLatestPrice());
+    }
 
+    public Double getGainPercentage(){
+        return (getGain()/buyingPrice) * 100.0;
+    }
 }

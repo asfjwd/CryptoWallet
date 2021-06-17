@@ -1,18 +1,19 @@
 package com.cse2216.cryptowallet.classes.domain;
 
 public class Coin {
-    private String name ;
-    private String key ;
-    private Integer coinId ;
-    private Double latest_price;
-    private Double volume ;
-    private Double change ;
+    private String name;
+    private String key;
+    private Integer coinId;
+    private Double latestPrice;
+    private Double volume;
+    private  Double change;
+
     public Coin(){}
-    public Coin(String name,  String key, Integer coinId, Double last_transaction_price, Double volume, Double change) {
+    public Coin(String name, String key, Integer coinId, Double latestPrice, Double volume, Double change) {
         this.name = name;
         this.coinId = coinId;
         this.key = key;
-        this.latest_price = last_transaction_price;
+        this.latestPrice = latestPrice;
         this.volume = volume;
         this.change = change;
     }
@@ -41,12 +42,12 @@ public class Coin {
         this.key = key;
     }
 
-    public Double getLatest_price() {
-        return latest_price;
+    public Double getLatestPrice() {
+        return latestPrice;
     }
 
-    public void setLatest_price(Double latest_price) {
-        this.latest_price = latest_price;
+    public void setLatestPrice(Double latestPrice) {
+        this.latestPrice = latestPrice;
     }
 
     public Double getVolume() {
