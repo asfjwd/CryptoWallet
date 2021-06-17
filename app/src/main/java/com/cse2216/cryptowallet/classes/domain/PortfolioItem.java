@@ -30,7 +30,7 @@ public class PortfolioItem extends Coin {
     }
 
     public Double getGain(){
-        return (buyingPrice - getLatestPrice()) * position;
+        return (getLatestPrice() - buyingPrice) * position;
     }
 
     public Double getGainPercentage(){
