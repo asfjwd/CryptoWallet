@@ -35,7 +35,6 @@ public class PortfolioFragment extends Fragment implements SwipeRefreshLayout.On
     public View onCreateView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
 
         initPortfolioItems();
-
         rootView = inflater.inflate(R.layout.portfolio_fragment_layout, container, false);
         portfolioItemRecyclerView = rootView.findViewById(R.id.portfolio_fragment);
         swipeRefreshLayout = rootView.findViewById(R.id.portfolio_fragment_swipe_refresh);
@@ -75,6 +74,7 @@ public class PortfolioFragment extends Fragment implements SwipeRefreshLayout.On
         for(int i = 0; i < portfolioItems.size(); i++){
             portfolioItems.get(i).setBuyingPrice(rand.nextDouble() * 100);
             portfolioItems.get(i).setLatestPrice(rand.nextDouble() * 100);
+            portfolioItems.get(i).setPosition(rand.nextDouble() * 100);
         }
         portfolioItemRecyclerView.setAdapter(new PortfolioAdapter(portfolioItems));
         swipeRefreshLayout.setRefreshing(false);

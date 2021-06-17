@@ -1,5 +1,7 @@
 package com.cse2216.cryptowallet.adapters;
 
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,9 +35,31 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.Port
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull PortfolioAdapter.PortfolioViewHolder holder, int position) {
-        holder.buyPrice.setText(portfolioItems.get(position).getBuyingPrice().toString());
-        holder.ltp.setText(portfolioItems.get(position).getLatestPrice().toString());
+
+        String up = Character.toString((char)(8593));
+        String down = Character.toString((char)(8595));
+
+        holder.buyPrice.setText(String.format("%.2f", portfolioItems.get(position).getBuyingPrice()));
+        holder.ltp.setText(String.format("%.2f", portfolioItems.get(position).getLatestPrice()));
         holder.currencyName.setText(portfolioItems.get(position).getName());
+        holder.position.setText(String.format("%.4f", portfolioItems.get(position).getPosition()));
+        Double gain = portfolioItems.get(position).getGain();
+        Double gainPercentage = portfolioItems.get(position).getGainPercentage();
+        holder.gain.setText(String.format("%.2f", gain));
+        holder.gainPercentage.setText(String.format("%.2f", gainPercentage) + " %");
+        holder.gainPercentage.setTypeface(null, Typeface.ITALIC);
+        if(gain > 0){
+            holder.gain.setTextColor(Color.GREEN);
+            holder.gainPercentage.setTextColor(Color.GREEN);
+            holder.arrow.setText(up);
+            holder.arrow.setTextColor(Color.GREEN);
+        }
+        else {
+            holder.gain.setTextColor(Color.RED);
+            holder.gainPercentage.setTextColor(Color.RED);
+            holder.arrow.setText(down);
+            holder.arrow.setTextColor(Color.RED);
+        }
     }
 
     @Override
@@ -45,7 +69,7 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.Port
 
     public class PortfolioViewHolder extends RecyclerView.ViewHolder{
         ImageView imgIcon;
-        TextView buyPrice, ltp, currencyName;
+        TextView buyPrice, ltp, currencyName, position, gain, gainPercentage, arrow;
 
         public PortfolioViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -53,6 +77,10 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.Port
             buyPrice = itemView.findViewById(R.id.buyPriceId);
             ltp = itemView.findViewById(R.id.ltpId);
             currencyName = itemView.findViewById(R.id.currency_name);
+            position = itemView.findViewById(R.id.positionId);
+            gain = itemView.findViewById(R.id.gainId);
+            gainPercentage = itemView.findViewById(R.id.gainPercentageId);
+            arrow = itemView.findViewById(R.id.arrowId);
         }
     }
 }
