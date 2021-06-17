@@ -15,6 +15,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.cse2216.cryptowallet.R;
 import com.cse2216.cryptowallet.adapters.PortfolioAdapter;
 import com.cse2216.cryptowallet.classes.domain.PortfolioItem;
+import com.cse2216.cryptowallet.classes.helper.LunarAPI;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -53,19 +54,21 @@ public class PortfolioFragment extends Fragment implements SwipeRefreshLayout.On
         return rootView;
     }
     private void initPortfolioItems() {
-        portfolioItems.add(0, new PortfolioItem("bitcoin", "1", 1, 0.0, 0.0, 0.0, 0.0, 0.0));
-        portfolioItems.add(1, new PortfolioItem("etherium", "2", 2, 0.0, 0.0, 0.0, 0.0, 0.0));
-        portfolioItems.add(2, new PortfolioItem("tether", "3", 3, 0.0, 0.0, 0.0, 0.0, 0.0));
-        portfolioItems.add(3, new PortfolioItem("binance", "3", 3, 0.0, 0.0, 0.0, 0.0, 0.0));
-        portfolioItems.add(4, new PortfolioItem("cardano", "4", 4, 0.0, 0.0, 0.0, 0.0, 0.0));
-        portfolioItems.add(5, new PortfolioItem("dogecoin", "5", 5, 0.0, 0.0, 0.0, 0.0, 0.0));
-        portfolioItems.add(6, new PortfolioItem("XRP", "6", 6, 0.0, 0.0, 0.0, 0.0, 0.0));
-        portfolioItems.add(7, new PortfolioItem("polkadot", "7", 7, 0.0, 0.0, 0.0, 0.0, 0.0));
+        portfolioItems.add(0, new PortfolioItem("bitcoin", "1" ,"B", 1, 0.0, 0.0, 0.0, 0.0, 0.0));
+        portfolioItems.add(1, new PortfolioItem("etherium", "2","E", 2, 0.0, 0.0, 0.0, 0.0, 0.0));
+        portfolioItems.add(2, new PortfolioItem("tether", "3","T", 3, 0.0, 0.0, 0.0, 0.0, 0.0));
+        portfolioItems.add(3, new PortfolioItem("binance", "3","BI" ,3, 0.0, 0.0, 0.0, 0.0, 0.0));
+        portfolioItems.add(4, new PortfolioItem("cardano", "4", "CA",4, 0.0, 0.0, 0.0, 0.0, 0.0));
+        portfolioItems.add(5, new PortfolioItem("dogecoin", "5","", 5, 0.0, 0.0, 0.0, 0.0, 0.0));
+        portfolioItems.add(6, new PortfolioItem("XRP", "6", "",6, 0.0, 0.0, 0.0, 0.0, 0.0));
+        portfolioItems.add(7, new PortfolioItem("polkadot", "7","", 7, 0.0, 0.0, 0.0, 0.0, 0.0));
     }
 
     @Override
     public void onRefresh() {
         updateList();
+        LunarAPI myAPI = new LunarAPI(this.getContext());
+        myAPI.updateCoins();
     }
 
     private void updateList() {

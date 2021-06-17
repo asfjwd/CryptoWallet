@@ -7,8 +7,8 @@ public class PortfolioItem extends Coin {
     public PortfolioItem() {
     }
 
-    public PortfolioItem(String name, String key, Integer coinId, Double latestPrice, Double volume, Double change, Double position, Double buyingPrice) {
-        super(name, key, coinId, latestPrice, volume, change);
+    public PortfolioItem(String name, String key, String symbol , Integer coinId, Double latestPrice, Double volume, Double change, Double position, Double buyingPrice) {
+        super(name, key,symbol, coinId, latestPrice, volume, change);
         this.position = position;
         this.buyingPrice = buyingPrice;
     }
