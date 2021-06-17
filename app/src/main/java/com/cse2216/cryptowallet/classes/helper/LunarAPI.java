@@ -20,24 +20,33 @@ import java.util.ArrayList;
 
 public class LunarAPI {
     RequestQueue queue;
+    private Integer numberOfCoins ;
+    private ArrayList < Coin > coinArrayList = new ArrayList< Coin>();
+    public LunarAPI(){}
     public LunarAPI(Context activityContext) {
         queue = Volley.newRequestQueue(activityContext);
+        numberOfCoins = 10;
+        for(int i = 0 ; i < 10 ;i++){
+            coinArrayList.add(new Coin("","","",0,0.0,0.0,0.0));
+        }
     }
-    public ArrayList <Coin> updateCoins(){
-        String url = "https://api.lunarcrush.com/v2?data=assets&key=e5p6u53g6y5kqvapl6nurj&symbol=BTC,LTC";
+    public void updateCoins(){
+
+        String url = "https://api.lunarcrush.com/v2?data=assets&key=e5p6u53g6y5kqvapl6nurj&symbol=BTC,USDT,BNB,ETH,LTC,ADA,DOT,BCH,XLM,USDC";
         Log.d("response" , "clicked updateCoins()") ;
-        ArrayList < Coin > coinArrayList = new ArrayList< Coin>();
+
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
                             JSONArray responseData = response.getJSONArray("data");
-                            for(int coinIndex = 0 ; coinIndex < 2 ; coinIndex++){
+                            for(int coinIndex = 0 ; coinIndex < numberOfCoins ; coinIndex++){
                                 JSONObject jsonCoin = responseData.getJSONObject(coinIndex) ;
                                 Coin coin = new Coin(jsonCoin) ;
                                 Log.d("response" , coin.toString());
-                                coinArrayList.add(coin);
+                                coinArrayList.set(coinIndex,coin);
+                                Log.d("response" , coinArrayList.size() + " Addded ");
                             }
                         }
                         catch (Exception e){
@@ -56,9 +65,11 @@ public class LunarAPI {
                     }
                 });
         queue.add(jsonObjectRequest) ;
-        return coinArrayList;
+        Log.d("response" , coinArrayList.size() + " LAST ");
 
     }
 
-
+    public ArrayList<Coin> getCoinArrayList() {
+        return coinArrayList;
+    }
 }

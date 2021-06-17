@@ -1,6 +1,7 @@
 package com.cse2216.cryptowallet.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.cse2216.cryptowallet.R;
 import com.cse2216.cryptowallet.adapters.PortfolioAdapter;
+import com.cse2216.cryptowallet.classes.domain.Coin;
 import com.cse2216.cryptowallet.classes.domain.PortfolioItem;
 import com.cse2216.cryptowallet.classes.helper.LunarAPI;
 
@@ -29,12 +31,13 @@ public class PortfolioFragment extends Fragment implements SwipeRefreshLayout.On
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView portfolioItemRecyclerView;
     List<PortfolioItem> portfolioItems = new ArrayList<PortfolioItem>();
-
+    private LunarAPI myAPI ;
     @Nullable
     @org.jetbrains.annotations.Nullable
     @Override
     public View onCreateView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-
+        myAPI = new LunarAPI(this.getContext());
+        myAPI.updateCoins();
         initPortfolioItems();
         rootView = inflater.inflate(R.layout.portfolio_fragment_layout, container, false);
         portfolioItemRecyclerView = rootView.findViewById(R.id.portfolio_fragment);
@@ -54,29 +57,39 @@ public class PortfolioFragment extends Fragment implements SwipeRefreshLayout.On
         return rootView;
     }
     private void initPortfolioItems() {
-        portfolioItems.add(0, new PortfolioItem("bitcoin", "1" ,"B", 1, 0.0, 0.0, 0.0, 0.0, 0.0));
-        portfolioItems.add(1, new PortfolioItem("etherium", "2","E", 2, 0.0, 0.0, 0.0, 0.0, 0.0));
-        portfolioItems.add(2, new PortfolioItem("tether", "3","T", 3, 0.0, 0.0, 0.0, 0.0, 0.0));
-        portfolioItems.add(3, new PortfolioItem("binance", "3","BI" ,3, 0.0, 0.0, 0.0, 0.0, 0.0));
-        portfolioItems.add(4, new PortfolioItem("cardano", "4", "CA",4, 0.0, 0.0, 0.0, 0.0, 0.0));
-        portfolioItems.add(5, new PortfolioItem("dogecoin", "5","", 5, 0.0, 0.0, 0.0, 0.0, 0.0));
-        portfolioItems.add(6, new PortfolioItem("XRP", "6", "",6, 0.0, 0.0, 0.0, 0.0, 0.0));
-        portfolioItems.add(7, new PortfolioItem("polkadot", "7","", 7, 0.0, 0.0, 0.0, 0.0, 0.0));
+        portfolioItems.add(0, new PortfolioItem("Bitcoin", "" ,"BTC", 1, 0.0, 0.0, 0.0, 0.0, 50.0));
+        portfolioItems.add(1, new PortfolioItem("Ethereum", "","ETH", 2, 0.0, 0.0, 0.0, 0.0, 30.0));
+        portfolioItems.add(2, new PortfolioItem("Tether", "","USDT", 3, 0.0, 0.0, 0.0, 0.0, 056.0));
+        portfolioItems.add(3, new PortfolioItem("Binance Coin", "","BNB" ,3, 0.0, 0.0, 0.0, 0.0, 023.0));
+        portfolioItems.add(4, new PortfolioItem("Cardano", "", "ADA",4, 0.0, 0.0, 0.0, 0.0, 01.0));
+        portfolioItems.add(5, new PortfolioItem("Litecoin", "","LTC", 5, 0.0, 0.0, 0.0, 0.0, 032.0));
+        portfolioItems.add(6, new PortfolioItem("Stellar", "", "XLM",6, 0.0, 0.0, 0.0, 0.0, 012.0));
+        portfolioItems.add(7, new PortfolioItem("Polkadot", "","DOT", 7, 0.0, 0.0, 0.0, 0.0, 03.0));
     }
 
     @Override
     public void onRefresh() {
         updateList();
-        LunarAPI myAPI = new LunarAPI(this.getContext());
-        myAPI.updateCoins();
     }
 
     private void updateList() {
+
+        myAPI.updateCoins();
+        ArrayList < Coin > coinArrayList = myAPI.getCoinArrayList();
         swipeRefreshLayout.setRefreshing(true);
         Random rand = new Random();
         for(int i = 0; i < portfolioItems.size(); i++){
-            portfolioItems.get(i).setBuyingPrice(rand.nextDouble() * 100);
-            portfolioItems.get(i).setLatestPrice(rand.nextDouble() * 100);
+            //portfolioItems.get(i).setBuyingPrice(rand.nextDouble() * 100);
+            Log.d("update" ,portfolioItems.get(i).getSymbol() );
+            for(int j = 0 ; j < coinArrayList.size() ; j++){
+                Log.d("update" ,coinArrayList.get(j).getSymbol() );
+               // Log.d("update" ,portfolioItems.get(i).getSymbol() );
+                if(portfolioItems.get(i).getSymbol().equals( coinArrayList.get(j).getSymbol() )){
+
+                    portfolioItems.get(i).setLatestPrice( coinArrayList.get(j).getLatestPrice()  );
+                }
+            }
+            //portfolioItems.get(i).setLatestPrice(rand.nextDouble() * 100);
             portfolioItems.get(i).setPosition(rand.nextDouble() * 100);
         }
         portfolioItemRecyclerView.setAdapter(new PortfolioAdapter(portfolioItems));
