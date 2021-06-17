@@ -25,15 +25,15 @@ public class PortfolioItem extends Coin {
         return position;
     }
 
-    public void setPosition(Integer quantity) {
+    public void setPosition(Double position) {
         this.position = position;
     }
 
     public Double getGain(){
-        return (buyingPrice - getLatestPrice());
+        return (buyingPrice - getLatestPrice()) * position;
     }
 
     public Double getGainPercentage(){
-        return (getGain()/buyingPrice) * 100.0;
+        return (getGain()/(buyingPrice * position)) * 100.0;
     }
 }
