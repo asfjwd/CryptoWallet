@@ -20,14 +20,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="40dp"
+        
+        <TextView
+            android:layout_width="20dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="-10dp"
-            android:layout_marginEnd="-20dp"
-            android:src="@drawable/vertical_line">
-        </ImageView>
+            android:paddingTop="10dp"
+            android:textSize="50dp"
+            android:textAlignment="center"
+            android:id="@+id/portfolio_vertical_line">
+
+        </TextView>
+        
+<!--        <ImageView-->
+<!--            android:layout_width="60dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginStart="-20dp"-->
+<!--            android:layout_marginEnd="-30dp"-->
+<!--            android:src="@drawable/vertical_line">-->
+<!--        </ImageView>-->
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="70dp"
             android:layout_height="100dp"
@@ -48,7 +58,7 @@
                 android:layout_height="68dp"
                 android:layout_marginTop="2dp"
                 android:src="@mipmap/ic_launcher"
-                android:id="@+id/img_icon"
+                android:id="@+id/portfolio_img_icon"
                 android:scaleX="0.80"
                 android:scaleY="0.80">
             </de.hdodenhof.circleimageview.CircleImageView>
@@ -77,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
                     android:layout_marginLeft="2dp"
-                    android:id="@+id/buyPriceId">
+                    android:id="@+id/portfolio_buy_price_id">
                 </TextView>
             </androidx.appcompat.widget.LinearLayoutCompat>
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -96,7 +106,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
                     android:layout_marginLeft="2dp"
-                    android:id="@+id/ltpId">
+                    android:id="@+id/portfolio_ltp_id">
                 </TextView>
             </androidx.appcompat.widget.LinearLayoutCompat>
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -115,7 +125,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
                     android:layout_marginLeft="2dp"
-                    android:id="@+id/positionId">
+                    android:id="@+id/portfolio_position_d">
                 </TextView>
             </androidx.appcompat.widget.LinearLayoutCompat>
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -134,7 +144,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
                     android:layout_marginLeft="2dp"
-                    android:id="@+id/gainId">
+                    android:id="@+id/portfolio_gain_id">
                 </TextView>
                 <TextView
                     android:layout_width="wrap_content"
@@ -142,14 +152,14 @@
                     android:textSize="18sp"
                     android:layout_marginLeft="2dp"
                     android:textStyle="bold"
-                    android:id="@+id/arrowId">
+                    android:id="@+id/portfolio_arrow_id">
                 </TextView>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
                     android:layout_marginLeft="2dp"
-                    android:id="@+id/gainPercentageId">
+                    android:id="@+id/portfolio_gain_percentage_id">
                 </TextView>
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>

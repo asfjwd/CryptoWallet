@@ -1,5 +1,6 @@
 package com.cse2216.cryptowallet.adapters;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -16,12 +17,18 @@ import com.cse2216.cryptowallet.classes.domain.PortfolioItem;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.PortfolioViewHolder> {
 
-    List<PortfolioItem> portfolioItems = new ArrayList<PortfolioItem>();
+    //Constants
+    String upArrow = Character.toString((char)(8593));
+    String downArrow = Character.toString((char)(8595));
+    String verticalLine = Character.toString((char)(9087));
+    Integer negativeRed = Color.parseColor("#FF1744");
+    Integer positiveGreen = Color.parseColor("#00E676");
+
+    List<PortfolioItem> portfolioItems;
 
     public PortfolioAdapter(List<PortfolioItem> portfolioItems){
         this.portfolioItems = portfolioItems;
@@ -33,11 +40,9 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.Port
         return new PortfolioViewHolder(view);
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull @NotNull PortfolioAdapter.PortfolioViewHolder holder, int position) {
-
-        String up = Character.toString((char)(8593));
-        String down = Character.toString((char)(8595));
 
         holder.buyPrice.setText(String.format("%.2f", portfolioItems.get(position).getBuyingPrice()));
         holder.ltp.setText(String.format("%.2f", portfolioItems.get(position).getLatestPrice()));
@@ -48,17 +53,20 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.Port
         holder.gain.setText(String.format("%.2f", gain));
         holder.gainPercentage.setText(String.format("%.2f", gainPercentage) + " %");
         holder.gainPercentage.setTypeface(null, Typeface.ITALIC);
+        holder.verticalLine.setText(verticalLine);
         if(gain > 0){
-            holder.gain.setTextColor(Color.GREEN);
-            holder.gainPercentage.setTextColor(Color.GREEN);
-            holder.arrow.setText(up);
-            holder.arrow.setTextColor(Color.GREEN);
+            holder.gain.setTextColor(positiveGreen);
+            holder.gainPercentage.setTextColor(positiveGreen);
+            holder.arrow.setText(upArrow);
+            holder.arrow.setTextColor(positiveGreen);
+            holder.verticalLine.setTextColor(positiveGreen);
         }
         else {
-            holder.gain.setTextColor(Color.RED);
-            holder.gainPercentage.setTextColor(Color.RED);
-            holder.arrow.setText(down);
-            holder.arrow.setTextColor(Color.RED);
+            holder.gain.setTextColor(negativeRed);
+            holder.gainPercentage.setTextColor(negativeRed);
+            holder.arrow.setText(downArrow);
+            holder.arrow.setTextColor(negativeRed);
+            holder.verticalLine.setTextColor(negativeRed);
         }
     }
 
@@ -69,18 +77,19 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.Port
 
     public class PortfolioViewHolder extends RecyclerView.ViewHolder{
         ImageView imgIcon;
-        TextView buyPrice, ltp, currencyName, position, gain, gainPercentage, arrow;
+        TextView buyPrice, ltp, currencyName, position, gain, gainPercentage, arrow, verticalLine;
 
         public PortfolioViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
-            imgIcon = itemView.findViewById(R.id.img_icon);
-            buyPrice = itemView.findViewById(R.id.buyPriceId);
-            ltp = itemView.findViewById(R.id.ltpId);
+            imgIcon = itemView.findViewById(R.id.portfolio_img_icon);
+            buyPrice = itemView.findViewById(R.id.portfolio_buy_price_id);
+            ltp = itemView.findViewById(R.id.portfolio_ltp_id);
             currencyName = itemView.findViewById(R.id.currency_name);
-            position = itemView.findViewById(R.id.positionId);
-            gain = itemView.findViewById(R.id.gainId);
-            gainPercentage = itemView.findViewById(R.id.gainPercentageId);
-            arrow = itemView.findViewById(R.id.arrowId);
+            position = itemView.findViewById(R.id.portfolio_buy_price_id);
+            gain = itemView.findViewById(R.id.portfolio_gain_id);
+            gainPercentage = itemView.findViewById(R.id.portfolio_gain_percentage_id);
+            arrow = itemView.findViewById(R.id.portfolio_arrow_id);
+            verticalLine = itemView.findViewById(R.id.portfolio_vertical_line);
         }
     }
 }
