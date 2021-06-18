@@ -18,8 +18,6 @@ import com.cse2216.cryptowallet.adapters.AllCoinsAdapter;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Random;
-
 public class AllCoinsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private View rootView;
@@ -51,18 +49,8 @@ public class AllCoinsFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     private void updateList() {
         swipeRefreshLayout.setRefreshing(true);
-<<<<<<< HEAD
-        Random rand = new Random();
-        for(int i = 0; i < rootActivity.coins.size(); i++){
-            rootActivity.coins.get(i).setLatestPrice(rand.nextDouble() * 100.0);
-            rootActivity.coins.get(i).setChange(rand.nextDouble() * 100.0 - 50);
-            rootActivity.coins.get(i).setVolume(rand.nextDouble() * 100.0);
-        }
-        allCoinsItemRecyclerView.setAdapter(new AllCoinsAdapter(rootActivity.coins, rootActivity.user.watchList));
-=======
         rootActivity.lunarAPI.updateCoins();
-        allCoinsItemRecyclerView.setAdapter(new AllCoinsAdapter(rootActivity.coins));
->>>>>>> 1ae8c2084e88f80b8e8df4b2fca073d72cb3ff85
+        allCoinsItemRecyclerView.setAdapter(new AllCoinsAdapter(rootActivity.coins, rootActivity.user.watchList));
         swipeRefreshLayout.setRefreshing(false);
     }
 

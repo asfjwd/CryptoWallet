@@ -17,7 +17,6 @@ import com.cse2216.cryptowallet.R;
 import com.cse2216.cryptowallet.activities.MainActivity;
 import com.cse2216.cryptowallet.adapters.PortfolioAdapter;
 import com.cse2216.cryptowallet.classes.domain.Coin;
-import com.cse2216.cryptowallet.classes.helper.LunarAPI;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -29,27 +28,11 @@ public class PortfolioFragment extends Fragment implements SwipeRefreshLayout.On
     private View rootView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView portfolioItemRecyclerView;
-<<<<<<< HEAD
-    private LunarAPI myAPI ;
     MainActivity rootActivity;
-=======
-    List<PortfolioItem> portfolioItems = new ArrayList<PortfolioItem>();
-    MainActivity rootActivity;
-    //private LunarAPI myAPI ;
->>>>>>> 1ae8c2084e88f80b8e8df4b2fca073d72cb3ff85
     @Nullable
     @org.jetbrains.annotations.Nullable
     @Override
     public View onCreateView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-<<<<<<< HEAD
-        myAPI = new LunarAPI(this.getContext());
-        myAPI.updateCoins();
-        rootActivity = (MainActivity) getActivity();
-=======
-        //myAPI = new LunarAPI(this.getContext());
-        //myAPI.updateCoins();
-        initPortfolioItems();
->>>>>>> 1ae8c2084e88f80b8e8df4b2fca073d72cb3ff85
         rootView = inflater.inflate(R.layout.portfolio_fragment_layout, container, false);
         rootActivity = (MainActivity) getActivity();
         portfolioItemRecyclerView = rootView.findViewById(R.id.portfolio_fragment);
@@ -83,14 +66,9 @@ public class PortfolioFragment extends Fragment implements SwipeRefreshLayout.On
             //rootActivity.user.portfolioItems.get(i).setBuyingPrice(rand.nextDouble() * 100);
             Log.d("update" ,rootActivity.user.portfolioItems.get(i).getSymbol() );
             for(int j = 0 ; j < coinArrayList.size() ; j++){
-<<<<<<< HEAD
                 Log.d("update" ,coinArrayList.get(j).getSymbol() );
                // Log.d("update" ,rootActivity.user.portfolioItems.get(i).getSymbol() );
                 if(rootActivity.user.portfolioItems.get(i).getSymbol().equals( coinArrayList.get(j).getSymbol() )){
-=======
-                if(portfolioItems.get(i).getSymbol().equals( coinArrayList.get(j).getSymbol() )){
->>>>>>> 1ae8c2084e88f80b8e8df4b2fca073d72cb3ff85
-
                     rootActivity.user.portfolioItems.get(i).setLatestPrice( coinArrayList.get(j).getLatestPrice()  );
                 }
             }
@@ -99,6 +77,5 @@ public class PortfolioFragment extends Fragment implements SwipeRefreshLayout.On
         }
         portfolioItemRecyclerView.setAdapter(new PortfolioAdapter(rootActivity.user.portfolioItems));
         swipeRefreshLayout.setRefreshing(false);
-
     }
 }
