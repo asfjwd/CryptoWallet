@@ -54,15 +54,15 @@ public class AllCoinsAdapter extends RecyclerView.Adapter<AllCoinsAdapter.AllCoi
         holder.leftSymbol.setText(leftSymbol);
 
         Boolean isInWatchList = false;
-        for(int i = 0; i < watchList.size(); i++){
-            if(watchList.get(i) == position){
+        for(Integer watchListItem : watchList){
+            if(watchListItem == position){
                 isInWatchList = true;
                 break;
             }
         }
 
         if(isInWatchList) {
-            holder.sw.setChecked(true);
+            holder.watchlistToggle.setChecked(true);
         }
 
         if(change_24hr > 0){
@@ -78,7 +78,7 @@ public class AllCoinsAdapter extends RecyclerView.Adapter<AllCoinsAdapter.AllCoi
             holder.leftSymbol.setTextColor(negativeRed);
         }
 
-        holder.sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        holder.watchlistToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     watchList.add(position);
@@ -103,7 +103,7 @@ public class AllCoinsAdapter extends RecyclerView.Adapter<AllCoinsAdapter.AllCoi
     public class AllCoinsViewHolder extends RecyclerView.ViewHolder {
         ImageView imgIcon;
         TextView currencyName, ltp, change_24hr, volume, arrow, leftSymbol;
-        SwitchMaterial sw;
+        SwitchMaterial watchlistToggle;
         public AllCoinsViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
 
@@ -115,7 +115,7 @@ public class AllCoinsAdapter extends RecyclerView.Adapter<AllCoinsAdapter.AllCoi
             arrow = itemView.findViewById(R.id.all_coins_arrow_id);
             leftSymbol = itemView.findViewById(R.id.all_coins_left_symbol);
 
-            sw = itemView.findViewById(R.id.all_coins_watchlist_toggle);
+            watchlistToggle = itemView.findViewById(R.id.all_coins_watchlist_toggle);
         }
     }
 }
