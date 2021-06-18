@@ -19,29 +19,23 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:id="@+id/portfolio_relative_layout">
+        android:orientation="horizontal">
         
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:textSize="60dp"
+            android:textSize="30dp"
             android:gravity="center_vertical"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
-            android:id="@+id/portfolio_vertical_line"
-            >
-
-        </TextView>
+            android:id="@+id/portfolio_left_symbol"/>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/portfolio_logo_title"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
             android:orientation="vertical"
-            android:layout_toRightOf="@id/portfolio_vertical_line">
+            android:layout_toRightOf="@id/portfolio_left_symbol">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="22dp"
@@ -125,7 +119,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
                     android:layout_marginLeft="2dp"
-                    android:id="@+id/portfolio_position_d">
+                    android:id="@+id/portfolio_position_id">
                 </TextView>
             </androidx.appcompat.widget.LinearLayoutCompat>
             <androidx.appcompat.widget.LinearLayoutCompat

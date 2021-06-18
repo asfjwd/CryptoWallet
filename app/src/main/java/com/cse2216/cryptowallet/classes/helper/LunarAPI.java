@@ -2,7 +2,6 @@ package com.cse2216.cryptowallet.classes.helper;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -10,7 +9,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.cse2216.cryptowallet.activities.MainActivity;
 import com.cse2216.cryptowallet.classes.domain.Coin;
 
 import org.json.JSONArray;
@@ -59,8 +57,6 @@ public class LunarAPI {
                         catch (Exception e){
                             Log.d("response" , "Error");
                         }
-
-
                     }
                 }, new Response.ErrorListener() {
 
@@ -73,9 +69,7 @@ public class LunarAPI {
                 });
         queue.add(jsonObjectRequest) ;
         Log.d("response" , coinArrayList.size() + " LAST ");
-
     }
-
     public ArrayList<Coin> getCoinArrayList() {
         return coinArrayList;
     }

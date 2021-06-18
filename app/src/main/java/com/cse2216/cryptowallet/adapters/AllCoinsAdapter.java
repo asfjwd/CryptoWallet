@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cse2216.cryptowallet.R;
 import com.cse2216.cryptowallet.classes.domain.Coin;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -25,7 +25,7 @@ public class AllCoinsAdapter extends RecyclerView.Adapter<AllCoinsAdapter.AllCoi
     //Constants
     String upArrow = Character.toString((char)(8593));
     String downArrow = Character.toString((char)(8595));
-    String verticalLine = Character.toString((char)(9087));
+    String leftSymbol = Character.toString((char)(8605));
     Integer negativeRed = Color.parseColor("#FF1744");
     Integer positiveGreen = Color.parseColor("#00E676");
 
@@ -47,11 +47,11 @@ public class AllCoinsAdapter extends RecyclerView.Adapter<AllCoinsAdapter.AllCoi
     @Override
     public void onBindViewHolder(@NonNull @NotNull AllCoinsAdapter.AllCoinsViewHolder holder, int position) {
         holder.currencyName.setText(allCoins.get(position).getName());
-        holder.ltp.setText(String.format("%.2f", allCoins.get(position).getLatestPrice()));
+        holder.ltp.setText(String.format("%.2f", allCoins.get(position).getLatestPrice()) + " $");
         Double change_24hr = allCoins.get(position).getChange();
-        holder.change_24hr.setText(String.format("%.2f", change_24hr));
-        holder.volume.setText(String.format("%.4f", allCoins.get(position).getVolume()));
-        holder.verticalLine.setText(verticalLine);
+        holder.change_24hr.setText(String.format("%.2f", change_24hr) + " %");
+        holder.volume.setText(String.format("%.2f", allCoins.get(position).getVolume()) + " $");
+        holder.leftSymbol.setText(leftSymbol);
 
         Boolean isInWatchList = false;
         for(int i = 0; i < watchList.size(); i++){
@@ -61,19 +61,21 @@ public class AllCoinsAdapter extends RecyclerView.Adapter<AllCoinsAdapter.AllCoi
             }
         }
 
-        if(isInWatchList) holder.sw.setChecked(true);
+        if(isInWatchList) {
+            holder.sw.setChecked(true);
+        }
 
         if(change_24hr > 0){
             holder.change_24hr.setTextColor(positiveGreen);
             holder.arrow.setText(upArrow);
             holder.arrow.setTextColor(positiveGreen);
-            holder.verticalLine.setTextColor(positiveGreen);
+            holder.leftSymbol.setTextColor(positiveGreen);
         }
         else {
             holder.change_24hr.setTextColor(negativeRed);
             holder.arrow.setText(downArrow);
             holder.arrow.setTextColor(negativeRed);
-            holder.verticalLine.setTextColor(negativeRed);
+            holder.leftSymbol.setTextColor(negativeRed);
         }
 
         holder.sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -100,8 +102,8 @@ public class AllCoinsAdapter extends RecyclerView.Adapter<AllCoinsAdapter.AllCoi
 
     public class AllCoinsViewHolder extends RecyclerView.ViewHolder {
         ImageView imgIcon;
-        TextView currencyName, ltp, change_24hr, volume, arrow, verticalLine;
-        Switch sw;
+        TextView currencyName, ltp, change_24hr, volume, arrow, leftSymbol;
+        SwitchMaterial sw;
         public AllCoinsViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
 
@@ -111,7 +113,7 @@ public class AllCoinsAdapter extends RecyclerView.Adapter<AllCoinsAdapter.AllCoi
             change_24hr = itemView.findViewById(R.id.all_coins_change_24hr_id);
             volume = itemView.findViewById(R.id.all_coins_volume_id);
             arrow = itemView.findViewById(R.id.all_coins_arrow_id);
-            verticalLine = itemView.findViewById(R.id.all_coins_vertical_line);
+            leftSymbol = itemView.findViewById(R.id.all_coins_left_symbol);
 
             sw = itemView.findViewById(R.id.all_coins_watchlist_toggle);
         }

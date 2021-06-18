@@ -25,21 +25,18 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:textSize="60dp"
+            android:textSize="30dp"
             android:gravity="center_vertical"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
-            android:id="@+id/watchlist_vertical_line">
-        </TextView>
+            android:id="@+id/watchlist_left_symbol"/>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/watchlist_logo_title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_toRightOf="@id/watchlist_vertical_line">
+            android:layout_toRightOf="@id/watchlist_left_symbol">
 
             <TextView
                 android:id="@+id/watchlist_currency_name"
@@ -62,7 +59,7 @@
                 android:src="@mipmap/ic_launcher"
                 android:layout_gravity="center_horizontal"
                 android:scaleX="0.80"
-                android:scaleY="0.80"></de.hdodenhof.circleimageview.CircleImageView>
+                android:scaleY="0.80"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -84,14 +81,14 @@
                     android:layout_height="wrap_content"
                     android:text="LTP : "
                     android:textColor="@color/black"
-                    android:textSize="14sp"></TextView>
+                    android:textSize="14sp"/>
 
                 <TextView
                     android:id="@+id/watchlist_ltp_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="2dp"
-                    android:textSize="14sp"></TextView>
+                    android:textSize="14sp"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -104,14 +101,14 @@
                     android:layout_height="wrap_content"
                     android:text="24hr % : "
                     android:textColor="@color/black"
-                    android:textSize="14sp"></TextView>
+                    android:textSize="14sp"/>
 
                 <TextView
                     android:id="@+id/watchlist_change_24hr_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="2dp"
-                    android:textSize="14sp"></TextView>
+                    android:textSize="14sp"/>
 
                 <TextView
                     android:id="@+id/watchlist_arrow_id"
@@ -119,7 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="2dp"
                     android:textSize="18sp"
-                    android:textStyle="bold"></TextView>
+                    android:textStyle="bold"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -132,14 +129,14 @@
                     android:layout_height="wrap_content"
                     android:text="Volume : "
                     android:textColor="@color/black"
-                    android:textSize="14sp"></TextView>
+                    android:textSize="14sp"/>
 
                 <TextView
                     android:id="@+id/watchlist_volume_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="2dp"
-                    android:textSize="14sp"></TextView>
+                    android:textSize="14sp"/>
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </RelativeLayout>

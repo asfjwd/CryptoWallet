@@ -58,6 +58,7 @@ public class WatchlistFragment extends Fragment implements SwipeRefreshLayout.On
 
     private void updateList() {
         swipeRefreshLayout.setRefreshing(true);
+        rootActivity.lunarAPI.updateCoins();
         watchListRecyclerView.setAdapter(new WatchListAdapter(rootActivity.coins, rootActivity.user.watchList));
         swipeRefreshLayout.setRefreshing(false);
     }

@@ -63,17 +63,17 @@ public class PortfolioFragment extends Fragment implements SwipeRefreshLayout.On
         ArrayList < Coin > coinArrayList = rootActivity.lunarAPI.getCoinArrayList();
         Random rand = new Random();
         for(int i = 0; i < rootActivity.user.portfolioItems.size(); i++){
-            //rootActivity.user.portfolioItems.get(i).setBuyingPrice(rand.nextDouble() * 100);
+            rootActivity.user.portfolioItems.get(i).setBuyingPrice(rand.nextDouble() * 500);
+            rootActivity.user.portfolioItems.get(i).setPosition(rand.nextDouble() * 100);
             Log.d("update" ,rootActivity.user.portfolioItems.get(i).getSymbol() );
             for(int j = 0 ; j < coinArrayList.size() ; j++){
                 Log.d("update" ,coinArrayList.get(j).getSymbol() );
-               // Log.d("update" ,rootActivity.user.portfolioItems.get(i).getSymbol() );
+                // Log.d("update" ,rootActivity.user.portfolioItems.get(i).getSymbol() );
                 if(rootActivity.user.portfolioItems.get(i).getSymbol().equals( coinArrayList.get(j).getSymbol() )){
                     rootActivity.user.portfolioItems.get(i).setLatestPrice( coinArrayList.get(j).getLatestPrice()  );
                 }
             }
             //rootActivity.user.portfolioItems.get(i).setLatestPrice(rand.nextDouble() * 100);
-            rootActivity.user.portfolioItems.get(i).setPosition(rand.nextDouble() * 100);
         }
         portfolioItemRecyclerView.setAdapter(new PortfolioAdapter(rootActivity.user.portfolioItems));
         swipeRefreshLayout.setRefreshing(false);
