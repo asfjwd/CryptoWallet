@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class UserInfo {
     private String email;
     private String token;
-    private ArrayList <PortfolioItem> portfolioItems = new ArrayList<PortfolioItem>();
-    private ArrayList < Integer > watchList = new ArrayList<Integer>();
+    public ArrayList < Integer > watchList = new ArrayList<Integer>();
+    public ArrayList <PortfolioItem> portfolioItems = new ArrayList<PortfolioItem>();
     public UserInfo(){}
     public UserInfo(String email, String token, ArrayList<PortfolioItem> portfolioItems, ArrayList<Integer> watchList) {
         this.email = email;
