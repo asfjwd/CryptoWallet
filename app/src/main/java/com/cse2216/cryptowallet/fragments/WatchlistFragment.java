@@ -32,6 +32,9 @@ public class WatchlistFragment extends Fragment implements SwipeRefreshLayout.On
         rootView = inflater.inflate(R.layout.watchlist_fragment_layout,container,false);
         rootActivity = (MainActivity) getActivity();
         watchListRecyclerView = rootView.findViewById(R.id.watchlist_fragment);
+        if(rootView == null){
+            System.out.println("NULL FOund");
+        }
         swipeRefreshLayout = rootView.findViewById(R.id.watchlist_fragment_swipe_refresh);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -51,7 +54,7 @@ public class WatchlistFragment extends Fragment implements SwipeRefreshLayout.On
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
+        if (isVisibleToUser && swipeRefreshLayout != null) {
             updateList();
         }
     }
