@@ -57,7 +57,7 @@ public class AllCoinsFragment extends Fragment implements SwipeRefreshLayout.OnR
             rootActivity.coins.get(i).setChange(rand.nextDouble() * 100.0 - 50);
             rootActivity.coins.get(i).setVolume(rand.nextDouble() * 100.0);
         }
-        allCoinsItemRecyclerView.setAdapter(new AllCoinsAdapter(rootActivity.coins));
+        allCoinsItemRecyclerView.setAdapter(new AllCoinsAdapter(rootActivity.coins, rootActivity.user.watchList));
         swipeRefreshLayout.setRefreshing(false);
     }
 

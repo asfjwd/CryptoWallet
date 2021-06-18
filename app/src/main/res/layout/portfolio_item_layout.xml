@@ -16,34 +16,34 @@
     android:outlineSpotShadowColor="@color/colorPrimaryDark"
     android:outlineAmbientShadowColor="@color/colorPrimaryDark"
     >
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:id="@+id/portfolio_relative_layout">
         
         <TextView
-            android:layout_width="20dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:paddingTop="10dp"
-            android:textSize="50dp"
-            android:textAlignment="center"
-            android:id="@+id/portfolio_vertical_line">
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textSize="60dp"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/portfolio_vertical_line"
+            >
 
         </TextView>
-        
-<!--        <ImageView-->
-<!--            android:layout_width="60dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_marginStart="-20dp"-->
-<!--            android:layout_marginEnd="-30dp"-->
-<!--            android:src="@drawable/vertical_line">-->
-<!--        </ImageView>-->
+
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="70dp"
+            android:id="@+id/portfolio_logo_title"
+            android:layout_width="wrap_content"
             android:layout_height="100dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_toRightOf="@id/portfolio_vertical_line">
             <TextView
-                android:layout_width="70dp"
+                android:layout_width="wrap_content"
                 android:layout_height="22dp"
                 android:id="@+id/currency_name"
                 android:layout_marginTop="4dp"
@@ -51,26 +51,26 @@
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:gravity="center_horizontal">
+                android:layout_gravity="center_horizontal">
             </TextView>
             <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="68dp"
                 android:layout_marginTop="2dp"
                 android:src="@mipmap/ic_launcher"
                 android:id="@+id/portfolio_img_icon"
+                android:layout_gravity="center_horizontal"
                 android:scaleX="0.80"
                 android:scaleY="0.80">
             </de.hdodenhof.circleimageview.CircleImageView>
         </androidx.appcompat.widget.LinearLayoutCompat>
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_toRightOf="@id/portfolio_logo_title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="30dp"
+            android:layout_marginLeft="40dp"
             android:layout_marginTop="7dp"
-            android:orientation="vertical"
-            android:outlineAmbientShadowColor="@color/black"
-            android:outlineSpotShadowColor="@color/black">
+            android:orientation="vertical">
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -163,6 +163,5 @@
                 </TextView>
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </RelativeLayout>
 </com.google.android.material.card.MaterialCardView>

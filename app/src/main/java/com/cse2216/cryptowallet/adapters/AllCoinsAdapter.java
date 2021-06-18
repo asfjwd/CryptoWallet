@@ -4,7 +4,9 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +17,7 @@ import com.cse2216.cryptowallet.classes.domain.Coin;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AllCoinsAdapter extends RecyclerView.Adapter<AllCoinsAdapter.AllCoinsViewHolder> {
@@ -27,10 +30,12 @@ public class AllCoinsAdapter extends RecyclerView.Adapter<AllCoinsAdapter.AllCoi
     Integer positiveGreen = Color.parseColor("#00E676");
 
     List<Coin> allCoins;
+    ArrayList<Integer> watchList;
 
 
-    public AllCoinsAdapter(List<Coin> allCoins){
+    public AllCoinsAdapter(List<Coin> allCoins, ArrayList<Integer> watchList){
         this.allCoins = allCoins;
+        this.watchList = watchList;
     }
 
     public AllCoinsViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
@@ -47,6 +52,17 @@ public class AllCoinsAdapter extends RecyclerView.Adapter<AllCoinsAdapter.AllCoi
         holder.change_24hr.setText(String.format("%.2f", change_24hr));
         holder.volume.setText(String.format("%.4f", allCoins.get(position).getVolume()));
         holder.verticalLine.setText(verticalLine);
+
+        Boolean isInWatchList = false;
+        for(int i = 0; i < watchList.size(); i++){
+            if(watchList.get(i) == position){
+                isInWatchList = true;
+                break;
+            }
+        }
+
+        if(isInWatchList) holder.sw.setChecked(true);
+
         if(change_24hr > 0){
             holder.change_24hr.setTextColor(positiveGreen);
             holder.arrow.setText(upArrow);
@@ -59,6 +75,22 @@ public class AllCoinsAdapter extends RecyclerView.Adapter<AllCoinsAdapter.AllCoi
             holder.arrow.setTextColor(negativeRed);
             holder.verticalLine.setTextColor(negativeRed);
         }
+
+        holder.sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    watchList.add(position);
+                } else {
+                    int idxToRemove = 0;
+                    for(int i = 0; i < watchList.size(); i++){
+                        if(watchList.get(i) == position){
+                            idxToRemove = i; break;
+                        }
+                    }
+                    watchList.remove(idxToRemove);
+                }
+            }
+        });
     }
 
     @Override
@@ -69,6 +101,7 @@ public class AllCoinsAdapter extends RecyclerView.Adapter<AllCoinsAdapter.AllCoi
     public class AllCoinsViewHolder extends RecyclerView.ViewHolder {
         ImageView imgIcon;
         TextView currencyName, ltp, change_24hr, volume, arrow, verticalLine;
+        Switch sw;
         public AllCoinsViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
 
@@ -79,6 +112,8 @@ public class AllCoinsAdapter extends RecyclerView.Adapter<AllCoinsAdapter.AllCoi
             volume = itemView.findViewById(R.id.all_coins_volume_id);
             arrow = itemView.findViewById(R.id.all_coins_arrow_id);
             verticalLine = itemView.findViewById(R.id.all_coins_vertical_line);
+
+            sw = itemView.findViewById(R.id.all_coins_watchlist_toggle);
         }
     }
 }
