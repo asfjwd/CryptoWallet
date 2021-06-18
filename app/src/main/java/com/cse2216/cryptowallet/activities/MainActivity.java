@@ -7,8 +7,12 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.cse2216.cryptowallet.R;
 import com.cse2216.cryptowallet.classes.domain.Coin;
+<<<<<<< HEAD
 import com.cse2216.cryptowallet.classes.domain.PortfolioItem;
 import com.cse2216.cryptowallet.classes.domain.UserInfo;
+=======
+import com.cse2216.cryptowallet.classes.helper.LunarAPI;
+>>>>>>> 1ae8c2084e88f80b8e8df4b2fca073d72cb3ff85
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -17,10 +21,16 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     public List<Coin> coins = new ArrayList<Coin>();
+<<<<<<< HEAD
     public UserInfo user;
+=======
+    public LunarAPI lunarAPI ;
+
+
+>>>>>>> 1ae8c2084e88f80b8e8df4b2fca073d72cb3ff85
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        populateData();
+        lunarAPI = new LunarAPI(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         com.cse2216.cryptowallet.ui.main.SectionsPagerAdapter sectionsPagerAdapter = new com.cse2216.cryptowallet.ui.main.SectionsPagerAdapter(this, getSupportFragmentManager());
@@ -28,10 +38,13 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
+        lunarAPI.updateCoins();
+        populateData();
     }
 
     private void populateData() {
 //        hardcode or from database
+<<<<<<< HEAD
         coins.add(0, new Coin("Bitcoin", "0", "0", 0, 0.0, 0.0, 0.0));
         coins.add(1, new Coin("Ethereum", "1", "1", 1, 0.0, 0.0, 0.0));
         coins.add(2, new Coin("Tether", "2", "2", 2, 0.0, 0.0, 0.0));
@@ -52,6 +65,9 @@ public class MainActivity extends AppCompatActivity {
         pfList.add(7, new PortfolioItem("Polkadot", "","DOT", 7, 0.0, 0.0, 0.0, 0.0, 03.0));
 
         user = new UserInfo("aasfjwd@gmail.com", "", pfList, new ArrayList<Integer>());
+=======
+          coins = lunarAPI.getCoinArrayList();
+>>>>>>> 1ae8c2084e88f80b8e8df4b2fca073d72cb3ff85
     }
 
 }
