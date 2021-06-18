@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.cse2216.cryptowallet.R;
+import com.cse2216.cryptowallet.activities.MainActivity;
 import com.cse2216.cryptowallet.adapters.PortfolioAdapter;
 import com.cse2216.cryptowallet.classes.domain.Coin;
 import com.cse2216.cryptowallet.classes.domain.PortfolioItem;
@@ -31,15 +32,17 @@ public class PortfolioFragment extends Fragment implements SwipeRefreshLayout.On
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView portfolioItemRecyclerView;
     List<PortfolioItem> portfolioItems = new ArrayList<PortfolioItem>();
-    private LunarAPI myAPI ;
+    MainActivity rootActivity;
+    //private LunarAPI myAPI ;
     @Nullable
     @org.jetbrains.annotations.Nullable
     @Override
     public View onCreateView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        myAPI = new LunarAPI(this.getContext());
-        myAPI.updateCoins();
+        //myAPI = new LunarAPI(this.getContext());
+        //myAPI.updateCoins();
         initPortfolioItems();
         rootView = inflater.inflate(R.layout.portfolio_fragment_layout, container, false);
+        rootActivity = (MainActivity) getActivity();
         portfolioItemRecyclerView = rootView.findViewById(R.id.portfolio_fragment);
         swipeRefreshLayout = rootView.findViewById(R.id.portfolio_fragment_swipe_refresh);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
@@ -73,17 +76,14 @@ public class PortfolioFragment extends Fragment implements SwipeRefreshLayout.On
     }
 
     private void updateList() {
-
-        myAPI.updateCoins();
-        ArrayList < Coin > coinArrayList = myAPI.getCoinArrayList();
+        rootActivity.lunarAPI.updateCoins();
         swipeRefreshLayout.setRefreshing(true);
+        ArrayList < Coin > coinArrayList = rootActivity.lunarAPI.getCoinArrayList();
         Random rand = new Random();
         for(int i = 0; i < portfolioItems.size(); i++){
             //portfolioItems.get(i).setBuyingPrice(rand.nextDouble() * 100);
             Log.d("update" ,portfolioItems.get(i).getSymbol() );
             for(int j = 0 ; j < coinArrayList.size() ; j++){
-                Log.d("update" ,coinArrayList.get(j).getSymbol() );
-               // Log.d("update" ,portfolioItems.get(i).getSymbol() );
                 if(portfolioItems.get(i).getSymbol().equals( coinArrayList.get(j).getSymbol() )){
 
                     portfolioItems.get(i).setLatestPrice( coinArrayList.get(j).getLatestPrice()  );

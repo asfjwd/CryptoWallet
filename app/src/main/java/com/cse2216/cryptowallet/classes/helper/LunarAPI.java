@@ -26,10 +26,17 @@ public class LunarAPI {
     public LunarAPI(Context activityContext) {
         queue = Volley.newRequestQueue(activityContext);
         numberOfCoins = 10;
-        for(int i = 0 ; i < 10 ;i++){
+        if(coinArrayList.size()!=numberOfCoins)
+            init(numberOfCoins);
+        updateCoins();
+    }
+
+    private void init(int numberOfCoins){
+        for(int coinIndex = 0 ; coinIndex < numberOfCoins ;coinIndex++){
             coinArrayList.add(new Coin("","","",0,0.0,0.0,0.0));
         }
     }
+
     public void updateCoins(){
 
         String url = "https://api.lunarcrush.com/v2?data=assets&key=e5p6u53g6y5kqvapl6nurj&symbol=BTC,USDT,BNB,ETH,LTC,ADA,DOT,BCH,XLM,USDC";

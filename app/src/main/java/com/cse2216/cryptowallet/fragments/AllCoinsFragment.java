@@ -51,12 +51,7 @@ public class AllCoinsFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     private void updateList() {
         swipeRefreshLayout.setRefreshing(true);
-        Random rand = new Random();
-        for(int i = 0; i < rootActivity.coins.size(); i++){
-            rootActivity.coins.get(i).setLatestPrice(rand.nextDouble() * 100.0);
-            rootActivity.coins.get(i).setChange(rand.nextDouble() * 100.0 - 50);
-            rootActivity.coins.get(i).setVolume(rand.nextDouble() * 100.0);
-        }
+        rootActivity.lunarAPI.updateCoins();
         allCoinsItemRecyclerView.setAdapter(new AllCoinsAdapter(rootActivity.coins));
         swipeRefreshLayout.setRefreshing(false);
     }
