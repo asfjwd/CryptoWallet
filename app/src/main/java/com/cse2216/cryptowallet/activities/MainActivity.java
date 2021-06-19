@@ -12,6 +12,8 @@ import com.cse2216.cryptowallet.classes.domain.PortfolioItem;
 import com.cse2216.cryptowallet.classes.domain.UserInfo;
 import com.cse2216.cryptowallet.classes.helper.LunarAPI;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;

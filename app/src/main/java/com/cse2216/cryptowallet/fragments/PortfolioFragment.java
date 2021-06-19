@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.cse2216.cryptowallet.R;
+import com.cse2216.cryptowallet.activities.LandingPageActivity;
 import com.cse2216.cryptowallet.activities.MainActivity;
 import com.cse2216.cryptowallet.adapters.PortfolioAdapter;
 import com.cse2216.cryptowallet.classes.domain.Coin;
@@ -29,6 +30,7 @@ public class PortfolioFragment extends Fragment implements SwipeRefreshLayout.On
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView portfolioItemRecyclerView;
     MainActivity rootActivity;
+
     @Nullable
     @org.jetbrains.annotations.Nullable
     @Override

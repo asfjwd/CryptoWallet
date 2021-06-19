@@ -2,6 +2,7 @@ package com.cse2216.cryptowallet.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,12 @@ import androidx.fragment.app.Fragment;
 import com.cse2216.cryptowallet.R;
 import com.cse2216.cryptowallet.activities.LandingPageActivity;
 import com.cse2216.cryptowallet.activities.MainActivity;
+import com.cse2216.cryptowallet.classes.helper.FirebaseHelper;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -28,7 +35,6 @@ public class LoginTabFragment extends Fragment {
     TextView forgotPassword;
     EditText email, password;
     Button loginButton;
-
     @Nullable
     @org.jetbrains.annotations.Nullable
     @Override
@@ -49,11 +55,14 @@ public class LoginTabFragment extends Fragment {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(credentialsMatch()){
-                    startMainActivity();
+                if(email.getText().toString().isEmpty()){
+                    Toast.makeText(rootActivity, "Email Field is Empty!", Toast.LENGTH_SHORT).show();
+                }
+                else if(password.getText().toString().isEmpty()){
+                    Toast.makeText(rootActivity, "Password Field is Empty!", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(rootActivity, "Credentials Don't Match!", Toast.LENGTH_SHORT).show();
+                    credentialsMatch(email.getText().toString() + "", password.getText().toString() + "");
                 }
             }
         });
@@ -66,11 +75,20 @@ public class LoginTabFragment extends Fragment {
         startActivity(intent);
     }
 
-    private boolean credentialsMatch() {
-        if(email.getText().toString().equals("asif") && password.getText().toString().equals("pass")){
-            System.out.println("True");
-            return true;
-        }
-        return false;
+    private void credentialsMatch(String email , String password) {
+        rootActivity.mAuth = FirebaseAuth.getInstance();
+        rootActivity.mAuth.signOut();
+        String TAG = "loginTag";
+        rootActivity.mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this.getActivity(), task -> {
+                    if (task.isSuccessful()) {
+                        rootActivity.user = rootActivity.mAuth.getCurrentUser();
+                        Log.d(TAG , "User " + rootActivity.user.getEmail());
+                        startMainActivity();
+                    } else {
+                        Toast.makeText(rootActivity, "Credentials Don't Match!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
     }
 }

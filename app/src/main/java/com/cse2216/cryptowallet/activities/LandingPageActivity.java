@@ -8,12 +8,15 @@ import androidx.viewpager.widget.ViewPager;
 import com.cse2216.cryptowallet.R;
 import com.cse2216.cryptowallet.adapters.LandingPageAdapter;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LandingPageActivity extends AppCompatActivity {
 
     ViewPager viewPager;
     TabLayout tabLayout;
-
+    public FirebaseAuth mAuth;
+    public FirebaseUser user ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
