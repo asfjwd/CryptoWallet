@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         lunarAPI = new LunarAPI(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -53,4 +54,8 @@ public class MainActivity extends AppCompatActivity {
         coins = lunarAPI.getCoinArrayList();
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
 }
