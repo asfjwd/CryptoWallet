@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Crypto Wallet</string>
-    <string name="tab_text_1">Portfolio</string>
-    <string name="tab_text_2">All Coins</string>
-    <string name="tab_text_3">Watchlist</string>
+    <string name="main_tab_text_1">Portfolio</string>
+    <string name="main_tab_text_2">All Coins</string>
+    <string name="main_tab_text_3">Watchlist</string>
+    <string name="landing_tab_text_1">LOGIN</string>
+    <string name="landing_tab_text_2">REGISTER</string>
 </resources>

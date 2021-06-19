@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.cse2216.cryptowallet.R;
+import com.cse2216.cryptowallet.adapters.MainPageAdapter;
 import com.cse2216.cryptowallet.classes.domain.Coin;
 import com.cse2216.cryptowallet.classes.domain.PortfolioItem;
 import com.cse2216.cryptowallet.classes.domain.UserInfo;
@@ -26,9 +27,9 @@ public class MainActivity extends AppCompatActivity {
         lunarAPI = new LunarAPI(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        com.cse2216.cryptowallet.ui.main.SectionsPagerAdapter sectionsPagerAdapter = new com.cse2216.cryptowallet.ui.main.SectionsPagerAdapter(this, getSupportFragmentManager());
+        MainPageAdapter MainPageAdapter = new MainPageAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = findViewById(R.id.view_pager);
-        viewPager.setAdapter(sectionsPagerAdapter);
+        viewPager.setAdapter(MainPageAdapter);
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
         lunarAPI.updateCoins();
