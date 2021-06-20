@@ -18,14 +18,11 @@ import androidx.fragment.app.Fragment;
 import com.cse2216.cryptowallet.R;
 import com.cse2216.cryptowallet.activities.LandingPageActivity;
 import com.cse2216.cryptowallet.activities.MainActivity;
-import com.cse2216.cryptowallet.classes.helper.FirebaseHelper;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import org.jetbrains.annotations.NotNull;
+
+import static android.content.ContentValues.TAG;
 
 public class LoginTabFragment extends Fragment {
 
@@ -52,6 +49,7 @@ public class LoginTabFragment extends Fragment {
         password = (EditText) rootActivity.findViewById(R.id.login_password);
         forgotPassword = (TextView) rootActivity.findViewById(R.id.forgot_password);
         loginButton = (Button) rootActivity.findViewById(R.id.login_button);
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +64,17 @@ public class LoginTabFragment extends Fragment {
                 }
             }
         });
+
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetPassword();
+            }
+        });
+    }
+
+    private void resetPassword() {
+        Log.i(TAG, "Resetting Password");
     }
 
     private void startMainActivity() {
