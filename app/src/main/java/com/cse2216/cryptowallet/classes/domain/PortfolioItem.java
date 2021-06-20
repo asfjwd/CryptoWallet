@@ -36,4 +36,9 @@ public class PortfolioItem extends Coin {
     public Double getGainPercentage(){
         return (getGain()/(buyingPrice * position)) * 100.0;
     }
+
+    public String toString(){
+        String temp = super.toString() + "\n Buying Price :"+Double.toString(this.buyingPrice);
+        return  temp;
+    }
 }

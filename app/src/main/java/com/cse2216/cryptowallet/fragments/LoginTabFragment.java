@@ -2,6 +2,7 @@ package com.cse2216.cryptowallet.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,7 +81,7 @@ public class LoginTabFragment extends Fragment {
     private void startMainActivity() {
         System.out.println("Starting Activity");
         Intent intent = new Intent(rootActivity, MainActivity.class);
-        intent.putExtra("email", email.getText().toString()); //sending email to MainActivity
+        intent.putExtra("loginType", "signin"); //sending email to MainActivity
         startActivity(intent);
     }
 

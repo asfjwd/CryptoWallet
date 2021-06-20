@@ -17,12 +17,19 @@ import androidx.fragment.app.Fragment;
 import com.cse2216.cryptowallet.R;
 import com.cse2216.cryptowallet.activities.LandingPageActivity;
 import com.cse2216.cryptowallet.activities.MainActivity;
+import com.cse2216.cryptowallet.classes.domain.PortfolioItem;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 
 public class RegisterTabFragment extends Fragment {
     View rootView;
@@ -70,9 +77,10 @@ public class RegisterTabFragment extends Fragment {
     }
 
     private void registerUser(String email ,String password) {
-        if(rootActivity.user!=null){
-            rootActivity.mAuth.signOut();
-        }
+
+        rootActivity.mAuth = FirebaseAuth.getInstance() ;
+        rootActivity.mAuth.signOut();
+
         String TAG = "register";
         rootActivity.mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this.getActivity(), new OnCompleteListener<AuthResult>() {
@@ -82,7 +90,8 @@ public class RegisterTabFragment extends Fragment {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             rootActivity.user = rootActivity.mAuth.getCurrentUser();
-                            startMainActivity();
+                           // Log.d("intent" , rootActivity.user.getEmail());
+                            createAndUpload();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -94,9 +103,20 @@ public class RegisterTabFragment extends Fragment {
                 });
 
     }
+
+    private void createAndUpload(){
+        // Create and upload userInfo in Firebase
+        String email = rootActivity.mAuth.getCurrentUser().getEmail() ;
+        String token = rootActivity.mAuth.getCurrentUser().getUid();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference reference = firebaseDatabase.getReference("UserInfo");
+        com.cse2216.cryptowallet.classes.domain.UserInfo newUser = new com.cse2216.cryptowallet.classes.domain.UserInfo(email,rootActivity.mAuth.getCurrentUser().getUid(),new ArrayList <PortfolioItem>() , new ArrayList<Integer>());
+        reference.child(token).setValue(newUser);
+        startMainActivity();
+    }
     private void startMainActivity(){
         Intent intent = new Intent(rootActivity, MainActivity.class);
-        intent.putExtra("email", email.getText().toString()); //sending email to MainActivity
+        intent.putExtra("loginType", "register"); //sending email to MainActivity
         startActivity(intent);
     }
     private boolean isEmailTaken() {

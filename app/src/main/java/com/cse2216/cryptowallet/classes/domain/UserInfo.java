@@ -46,4 +46,7 @@ public class UserInfo {
     public void setWatchList(ArrayList<Integer> watchList) {
         this.watchList = watchList;
     }
+    public String toString(){
+        return "Email: " + email +"\n token : " + token +"\n" + portfolioItems.toString() +"\n" + watchList.toString();
+    }
 }
