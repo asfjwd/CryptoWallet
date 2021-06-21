@@ -29,4 +29,7 @@ public class LandingPageActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
     }
+    public void onBackPressed() {
+        return;
+    }
 }

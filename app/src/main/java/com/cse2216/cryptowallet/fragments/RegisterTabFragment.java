@@ -2,7 +2,9 @@ package com.cse2216.cryptowallet.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PatternMatcher;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +62,10 @@ public class RegisterTabFragment extends Fragment {
                 if(email.getText().toString().isEmpty()){
                     Toast.makeText(rootActivity, "Email Field is Empty!", Toast.LENGTH_SHORT).show();
                 }
+                else
+                    if(isValidEmail(email.getText().toString())){
+                        Toast.makeText(rootActivity, "Provide a correct email!", Toast.LENGTH_SHORT).show();
+                    }
                 else if(password.getText().toString().isEmpty()){
                     Toast.makeText(rootActivity, "Password Field is Empty!", Toast.LENGTH_SHORT).show();
                 }
@@ -95,7 +101,7 @@ public class RegisterTabFragment extends Fragment {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(rootActivity, "Authentication failed.",
+                            Toast.makeText(rootActivity, "Authentication failed : Email address already taken or Use atleast 6 character password.",
                                     Toast.LENGTH_SHORT).show();
 //                            updateUI(null);
                         }
@@ -121,5 +127,11 @@ public class RegisterTabFragment extends Fragment {
     }
     private boolean isEmailTaken() {
         return false;
+    }
+    private boolean isValidEmail(String email){
+        if(Patterns.EMAIL_ADDRESS.matcher(email).matches())
+            return false;
+        else
+            return  true ;
     }
 }
