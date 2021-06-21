@@ -1,9 +1,12 @@
 package com.cse2216.cryptowallet.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,6 +40,7 @@ public class AllCoinsFragment extends Fragment implements SwipeRefreshLayout.OnR
         swipeRefreshLayout.setOnRefreshListener(this);
         allCoinsItemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         allCoinsItemRecyclerView.setHasFixedSize(true);
+        Log.d("Call" , "onCreateView Called");
         swipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {

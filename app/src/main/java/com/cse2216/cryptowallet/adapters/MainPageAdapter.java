@@ -1,6 +1,7 @@
 package com.cse2216.cryptowallet.adapters;
 
 import android.content.Context;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -27,7 +28,6 @@ public class MainPageAdapter extends FragmentPagerAdapter {
         super(fm);
         mContext = context;
     }
-
     @Override
     public Fragment getItem(int position) {
         // getItem is called to instantiate the fragment for the given page.

@@ -1,9 +1,12 @@
 package com.cse2216.cryptowallet.activities;
 
+import android.content.Intent;
 import android.icu.text.CaseMap;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,14 +33,25 @@ public class MainActivity extends AppCompatActivity {
     public List<Coin> coins = new ArrayList<Coin>();
     public UserInfo user;
     public LunarAPI lunarAPI ;
+    private TextView titleButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         lunarAPI = new LunarAPI(this);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         MainPageAdapter MainPageAdapter = new MainPageAdapter(this, getSupportFragmentManager());
+
+        titleButton = (TextView) findViewById(R.id.title) ;
+        titleButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Log.d("TitleButton", "titlebuttonpressed");
+                startLandingActivity();
+                return false;
+            }
+
+        });
         ViewPager viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(MainPageAdapter);
         TabLayout tabs = findViewById(R.id.tabs);
@@ -85,6 +99,15 @@ public class MainActivity extends AppCompatActivity {
 
         //Log.d("populate" , user.toString()) ;
         coins = lunarAPI.getCoinArrayList();
+    }
+
+    private void startLandingActivity() {
+       // System.out.println("Starting Activity");
+        Intent intent = new Intent( MainActivity.this , LandingPageActivity.class);
+        FirebaseAuth mAuth= FirebaseAuth.getInstance();
+        mAuth.signOut();
+        intent.putExtra("loginType", "loggedout"); //sending email to MainActivity
+        startActivity(intent);
     }
 
     @Override
