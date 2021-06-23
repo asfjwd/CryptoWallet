@@ -13,11 +13,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.cse2216.cryptowallet.R;
+import com.cse2216.cryptowallet.adapters.AllCoinsAdapter;
 import com.cse2216.cryptowallet.adapters.MainPageAdapter;
 import com.cse2216.cryptowallet.classes.domain.Coin;
 import com.cse2216.cryptowallet.classes.domain.PortfolioItem;
 import com.cse2216.cryptowallet.classes.domain.UserInfo;
 import com.cse2216.cryptowallet.classes.helper.LunarAPI;
+import com.cse2216.cryptowallet.fragments.AllCoinsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
@@ -30,8 +32,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    public List<Coin> coins = new ArrayList<Coin>();
-    public UserInfo user;
+    public static List<Coin> coins = new ArrayList<Coin>();
+    public static UserInfo user;
     public LunarAPI lunarAPI ;
     private TextView titleButton;
     @Override
@@ -90,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     UserInfo dummyUser = task.getResult().getValue(UserInfo.class);
                     user = new UserInfo(dummyUser.getEmail(), dummyUser.getToken(), pfList, dummyUser.getWatchList());
+                    AllCoinsFragment.allCoinsItemRecyclerView.setAdapter(new AllCoinsAdapter(MainActivity.coins, user.watchList));
                     firebaseDatabase.getReference("UserInfo").child(userToken).setValue(dummyUser);
                     Log.d("firebase", dummyUser.toString());
                 }

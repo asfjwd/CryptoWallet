@@ -10,6 +10,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.cse2216.cryptowallet.classes.domain.Coin;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -53,6 +56,13 @@ public class LunarAPI {
                                 coinArrayList.set(coinIndex,coin);
                                 Log.d("response" , coinArrayList.size() + " Addded ");
                             }
+
+                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("AllCoinsList");
+                            reference.setValue(coinArrayList);
+
+
+
+
                         }
                         catch (Exception e){
                             Log.d("response" , "Error");

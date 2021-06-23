@@ -13,8 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cse2216.cryptowallet.R;
+import com.cse2216.cryptowallet.activities.MainActivity;
 import com.cse2216.cryptowallet.classes.domain.Coin;
 import com.cse2216.cryptowallet.classes.domain.UserInfo;
+import com.cse2216.cryptowallet.fragments.AllCoinsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -132,7 +134,7 @@ public class AllCoinsAdapter extends RecyclerView.Adapter<AllCoinsAdapter.AllCoi
         return allCoins.size();
     }
 
-    public class AllCoinsViewHolder extends RecyclerView.ViewHolder {
+    public static class AllCoinsViewHolder extends RecyclerView.ViewHolder {
         ImageView imgIcon;
         TextView currencyName, ltp, change_24hr, volume, arrow, leftSymbol;
         SwitchMaterial watchlistToggle;

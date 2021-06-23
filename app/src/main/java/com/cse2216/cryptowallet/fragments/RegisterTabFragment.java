@@ -85,7 +85,8 @@ public class RegisterTabFragment extends Fragment {
     private void registerUser(String email ,String password) {
 
         rootActivity.mAuth = FirebaseAuth.getInstance() ;
-        rootActivity.mAuth.signOut();
+        if(rootActivity.mAuth.getCurrentUser()!=null)
+            rootActivity.mAuth.signOut();
 
         String TAG = "register";
         rootActivity.mAuth.createUserWithEmailAndPassword(email, password)

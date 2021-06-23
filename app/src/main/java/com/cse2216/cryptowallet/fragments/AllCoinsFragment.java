@@ -18,6 +18,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.cse2216.cryptowallet.R;
 import com.cse2216.cryptowallet.activities.MainActivity;
 import com.cse2216.cryptowallet.adapters.AllCoinsAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -25,7 +30,8 @@ public class AllCoinsFragment extends Fragment implements SwipeRefreshLayout.OnR
 
     private View rootView;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private RecyclerView allCoinsItemRecyclerView;
+    public static RecyclerView allCoinsItemRecyclerView;
+    private AllCoinsAdapter adapter ;
     MainActivity rootActivity;
 
     @Nullable
@@ -34,28 +40,48 @@ public class AllCoinsFragment extends Fragment implements SwipeRefreshLayout.OnR
     public View onCreateView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.all_coins_fragment_layout,container,false);
         rootActivity = (MainActivity) getActivity();
+        adapter = new AllCoinsAdapter(rootActivity.coins , rootActivity.user.watchList );
+
         allCoinsItemRecyclerView = rootView.findViewById(R.id.all_coins_fragment);
         swipeRefreshLayout = rootView.findViewById(R.id.all_coins_fragment_swipe_refresh);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         swipeRefreshLayout.setOnRefreshListener(this);
         allCoinsItemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         allCoinsItemRecyclerView.setHasFixedSize(true);
+        allCoinsItemRecyclerView.setAdapter(new AllCoinsAdapter(rootActivity.coins, rootActivity.user.watchList));
         Log.d("Call" , "onCreateView Called");
         swipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
                 swipeRefreshLayout.setRefreshing(true);
                 updateList();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
         return rootView;
     }
 
     private void updateList() {
-        swipeRefreshLayout.setRefreshing(true);
+
         rootActivity.lunarAPI.updateCoins();
-        allCoinsItemRecyclerView.setAdapter(new AllCoinsAdapter(rootActivity.coins, rootActivity.user.watchList));
-        swipeRefreshLayout.setRefreshing(false);
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("AllCoinsList");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                swipeRefreshLayout.setRefreshing(true);
+                allCoinsItemRecyclerView.setAdapter(new AllCoinsAdapter(rootActivity.coins, rootActivity.user.watchList));
+                swipeRefreshLayout.setRefreshing(false);
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+
+
+
     }
 
     @Override
