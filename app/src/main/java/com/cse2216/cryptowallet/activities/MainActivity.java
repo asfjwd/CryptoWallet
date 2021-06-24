@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         });
         ViewPager viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(MainPageAdapter);
+        viewPager.setOffscreenPageLimit(3);
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
         tabs.getTabAt(1).select();
@@ -70,14 +71,14 @@ public class MainActivity extends AppCompatActivity {
     private void populateData() {
 //        hardcode or from database
         ArrayList<PortfolioItem> pfList = new ArrayList<PortfolioItem>();
-        pfList.add(0, new PortfolioItem("Bitcoin", "" ,"BTC", 1, 0.0, 0.0, 0.0, 0.0, 50.0));
-        pfList.add(1, new PortfolioItem("Ethereum", "","ETH", 2, 0.0, 0.0, 0.0, 0.0, 30.0));
-        pfList.add(2, new PortfolioItem("Tether", "","USDT", 3, 0.0, 0.0, 0.0, 0.0, 056.0));
-        pfList.add(3, new PortfolioItem("Binance Coin", "","BNB" ,3, 0.0, 0.0, 0.0, 0.0, 023.0));
-        pfList.add(4, new PortfolioItem("Cardano", "", "ADA",4, 0.0, 0.0, 0.0, 0.0, 01.0));
-        pfList.add(5, new PortfolioItem("Litecoin", "","LTC", 5, 0.0, 0.0, 0.0, 0.0, 032.0));
-        pfList.add(6, new PortfolioItem("Stellar", "", "XLM",6, 0.0, 0.0, 0.0, 0.0, 012.0));
-        pfList.add(7, new PortfolioItem("Polkadot", "","DOT", 7, 0.0, 0.0, 0.0, 0.0, 03.0));
+        pfList.add(0, new PortfolioItem("Bitcoin", "" ,"BTC", 1, 0.0, 0.0, 0.0, 100.0, 50.0));
+        pfList.add(1, new PortfolioItem("Ethereum", "","ETH", 2, 0.0, 0.0, 0.0, 100.0, 30.0));
+        pfList.add(2, new PortfolioItem("Tether", "","USDT", 3, 0.0, 0.0, 0.0, 100.0, 056.0));
+        pfList.add(3, new PortfolioItem("Binance Coin", "","BNB" ,3, 0.0, 0.0, 0.0, 100.0, 023.0));
+        pfList.add(4, new PortfolioItem("Cardano", "", "ADA",4, 0.0, 0.0, 0.0, 100.0, 01.0));
+        pfList.add(5, new PortfolioItem("Litecoin", "","LTC", 5, 0.0, 0.0, 0.0, 100.0, 032.0));
+        pfList.add(6, new PortfolioItem("Stellar", "", "XLM",6, 0.0, 0.0, 0.0, 100.0, 012.0));
+        pfList.add(7, new PortfolioItem("Polkadot", "","DOT", 7, 0.0, 0.0, 0.0, 100.0, 03.0));
         user = new UserInfo("x","x",pfList,new ArrayList <Integer >());
         String userToken = FirebaseAuth.getInstance().getCurrentUser().getUid() ;
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance() ;

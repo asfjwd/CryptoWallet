@@ -1,13 +1,17 @@
 package com.cse2216.cryptowallet.adapters;
 
-import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.PortfolioViewHolder> {
+public class PortfolioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     //Constants
     String upArrow = Character.toString((char)(8593));
@@ -28,48 +32,152 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.Port
     Integer negativeRed = Color.parseColor("#FF1744");
     Integer positiveGreen = Color.parseColor("#00E676");
 
+    Context context;
     List<PortfolioItem> portfolioItems;
+    List<Boolean> recyclerMenuStatus;
 
-    public PortfolioAdapter(List<PortfolioItem> portfolioItems){
+    private final int SHOW_MENU = 1;
+    private final int HIDE_MENU = 2;
+
+    public PortfolioAdapter(List<PortfolioItem> portfolioItems, List<Boolean> recyclerMenuStatus, Context context){
         this.portfolioItems = portfolioItems;
+        this.recyclerMenuStatus = recyclerMenuStatus;
+        this.context = context;
     }
 
-    public PortfolioViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.portfolio_item_layout, parent, false);
-        return new PortfolioViewHolder(view);
-    }
-
-    @SuppressLint("ResourceAsColor")
     @Override
-    public void onBindViewHolder(@NonNull @NotNull PortfolioAdapter.PortfolioViewHolder holder, int position) {
+    public int getItemViewType(int position) {
+        if(recyclerMenuStatus.get(position)){
+            return SHOW_MENU;
+        }else{
+            return HIDE_MENU;
+        }
+    }
 
-        holder.buyPrice.setText(String.format("%.2f", portfolioItems.get(position).getBuyingPrice()) + " $");
-        holder.ltp.setText(String.format("%.2f", portfolioItems.get(position).getLatestPrice()) + " $");
-        holder.currencyName.setText(portfolioItems.get(position).getName());
-        holder.position.setText(String.format("%.2f", portfolioItems.get(position).getPosition()));
-        Double gain = portfolioItems.get(position).getGain();
-        Double gainPercentage = portfolioItems.get(position).getGainPercentage();
-        holder.gain.setText(String.format("%.2f", gain));
-        holder.gainPercentage.setText(String.format("%.2f", gainPercentage) + " %");
-        holder.gainPercentage.setTypeface(null, Typeface.ITALIC);
-        holder.leftSymbol.setText(leftSymbol);
-        if(gain > 0){
-            holder.gain.setTextColor(positiveGreen);
-            holder.gainPercentage.setTextColor(positiveGreen);
-            holder.arrow.setText(upArrow);
-            holder.arrow.setTextColor(positiveGreen);
-            holder.leftSymbol.setTextColor(positiveGreen);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+
+        View v;
+        if(viewType==SHOW_MENU){
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View view = inflater.inflate(R.layout.recycler_menu, parent, false);
+            return new MenuViewHolder(view);
+        }else{
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View view = inflater.inflate(R.layout.portfolio_item_layout, parent, false);
+            return new PortfolioViewHolder(view);
+
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder holder, int position) {
+        if(holder instanceof MenuViewHolder){
+            ((MenuViewHolder) holder).back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    closeMenu();
+                }
+            });
+
+            ((MenuViewHolder) holder).cashout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Dialog dialog;
+                    dialog = new Dialog(context);
+                    dialog.setContentView(R.layout.dialog_cashout);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dialog.show();
+
+                    EditText amount = dialog.findViewById(R.id.cashout_quantity);
+                    TextView cancelButton = dialog.findViewById(R.id.cashout_cancel_button);
+                    TextView confirmButton = dialog.findViewById(R.id.cashout_confirm_button);
+
+                    confirmButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            double new_position = (portfolioItems.get(position).getPosition() - Double.parseDouble(amount.getText().toString()));
+                            if(new_position < 0){
+                                Toast.makeText(context, "Your position is smaller than " + amount.getText(), Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                dialog.dismiss();
+                                portfolioItems.get(position).setPosition(new_position);
+                                notifyDataSetChanged();
+                            }
+                        }
+                    });
+
+                    cancelButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                }
+            });
+
+            ((MenuViewHolder) holder).remove.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    portfolioItems.remove(position);
+                    recyclerMenuStatus.remove(position);
+                    notifyDataSetChanged();
+                }
+            });
         }
         else {
-            holder.leftSymbol.setScaleY(-1);
-            holder.leftSymbol.setScaleX(1);
-            holder.gain.setTextColor(negativeRed);
-            holder.gainPercentage.setTextColor(negativeRed);
-            holder.arrow.setText(downArrow);
-            holder.arrow.setTextColor(negativeRed);
-            holder.leftSymbol.setTextColor(negativeRed);
+            ((PortfolioViewHolder) holder).buyPrice.setText(String.format("%.2f", portfolioItems.get(position).getBuyingPrice()) + " $");
+            ((PortfolioViewHolder) holder).ltp.setText(String.format("%.2f", portfolioItems.get(position).getLatestPrice()) + " $");
+            ((PortfolioViewHolder) holder).currencyName.setText(portfolioItems.get(position).getName());
+            ((PortfolioViewHolder) holder).position.setText(String.format("%.2f", portfolioItems.get(position).getPosition()));
+            Double gain = portfolioItems.get(position).getGain();
+            Double gainPercentage = portfolioItems.get(position).getGainPercentage();
+            ((PortfolioViewHolder) holder).gain.setText(String.format("%.2f", gain));
+            ((PortfolioViewHolder) holder).gainPercentage.setText(String.format("%.2f", gainPercentage) + " %");
+            ((PortfolioViewHolder) holder).gainPercentage.setTypeface(null, Typeface.ITALIC);
+            ((PortfolioViewHolder) holder).leftSymbol.setText(leftSymbol);
+            if(gain > 0){
+                ((PortfolioViewHolder) holder).leftSymbol.setScaleY(1);
+                ((PortfolioViewHolder) holder).gain.setTextColor(positiveGreen);
+                ((PortfolioViewHolder) holder).gainPercentage.setTextColor(positiveGreen);
+                ((PortfolioViewHolder) holder).arrow.setText(upArrow);
+                ((PortfolioViewHolder) holder).arrow.setTextColor(positiveGreen);
+                ((PortfolioViewHolder) holder).leftSymbol.setTextColor(positiveGreen);
+            }
+            else {
+                ((PortfolioViewHolder) holder).leftSymbol.setScaleY(-1);
+                ((PortfolioViewHolder) holder).gain.setTextColor(negativeRed);
+                ((PortfolioViewHolder) holder).gainPercentage.setTextColor(negativeRed);
+                ((PortfolioViewHolder) holder).arrow.setText(downArrow);
+                ((PortfolioViewHolder) holder).arrow.setTextColor(negativeRed);
+                ((PortfolioViewHolder) holder).leftSymbol.setTextColor(negativeRed);
+            }
         }
+    }
+
+    public void showMenu(int position) {
+        for(int i=0; i<recyclerMenuStatus.size(); i++){
+            recyclerMenuStatus.set(i, false);
+        }
+        recyclerMenuStatus.set(position, true);
+        notifyDataSetChanged();
+    }
+
+
+    public boolean isMenuShown() {
+        for(int i=0; i<recyclerMenuStatus.size(); i++){
+            if(recyclerMenuStatus.get(i)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void closeMenu() {
+        for(int i=0; i<recyclerMenuStatus.size(); i++){
+            recyclerMenuStatus.set(i, false);
+        }
+        notifyDataSetChanged();
     }
 
     @Override
@@ -92,6 +200,17 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.Port
             gainPercentage = itemView.findViewById(R.id.portfolio_gain_percentage_id);
             arrow = itemView.findViewById(R.id.portfolio_arrow_id);
             leftSymbol = itemView.findViewById(R.id.portfolio_left_symbol);
+        }
+    }
+
+    public class MenuViewHolder extends RecyclerView.ViewHolder{
+        ImageView back, cashout, remove;
+        public MenuViewHolder(View itemView){
+
+            super(itemView);
+            back = itemView.findViewById(R.id.recycler_menu_return);
+            cashout = itemView.findViewById(R.id.recycler_menu_cashout);
+            remove = itemView.findViewById(R.id.recycler_menu_delete);
         }
     }
 }
