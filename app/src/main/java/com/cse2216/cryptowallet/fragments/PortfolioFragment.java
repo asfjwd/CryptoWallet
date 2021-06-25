@@ -53,6 +53,7 @@ public class PortfolioFragment extends Fragment implements SwipeRefreshLayout.On
     @Nullable
     @org.jetbrains.annotations.Nullable
     @Override
+
     public View onCreateView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.portfolio_fragment_layout, container, false);
         rootActivity = (MainActivity) getActivity();

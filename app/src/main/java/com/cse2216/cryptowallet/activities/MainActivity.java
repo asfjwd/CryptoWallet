@@ -1,15 +1,19 @@
 package com.cse2216.cryptowallet.activities;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import com.cse2216.cryptowallet.R;
@@ -34,24 +38,19 @@ public class MainActivity extends AppCompatActivity {
     public static UserInfo user;
     public LunarAPI lunarAPI ;
     private TextView titleButton;
+    private Toolbar toolbar;
     boolean doubleBackToExitPressedOnce = false;
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         lunarAPI = new LunarAPI(this);
         populateData();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
         MainPageAdapter MainPageAdapter = new MainPageAdapter(this, getSupportFragmentManager());
-        titleButton = (TextView) findViewById(R.id.title) ;
-                titleButton.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        Log.d("TitleButton", "titlebuttonpressed");
-                        startLandingActivity();
-                        return false;
-                    }
-
-                });
                 ViewPager viewPager = findViewById(R.id.view_pager);
                 viewPager.setAdapter(MainPageAdapter);
                 viewPager.setOffscreenPageLimit(3);
@@ -138,5 +137,23 @@ public class MainActivity extends AppCompatActivity {
                 doubleBackToExitPressedOnce=false;
             }
         }, 2000);
+    }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.logout) {
+            startLandingActivity();
+            Toast.makeText(this, "Logging Out!", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
