@@ -13,6 +13,12 @@ public class PortfolioItem extends Coin {
         this.buyingPrice = buyingPrice;
     }
 
+    public PortfolioItem(Coin coin, Double position, Double buyingPrice){
+        super(coin.getName(), coin.getKey(), coin.getSymbol(), coin.getCoinId(), coin.getLatestPrice(), coin.getVolume(), coin.getChange());
+        this.position = position;
+        this.buyingPrice = buyingPrice;
+    }
+
     public Double getBuyingPrice() {
         return buyingPrice;
     }

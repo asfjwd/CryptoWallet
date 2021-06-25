@@ -1,7 +1,9 @@
 package com.cse2216.cryptowallet.fragments;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,6 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +30,9 @@ import com.cse2216.cryptowallet.R;
 import com.cse2216.cryptowallet.activities.MainActivity;
 import com.cse2216.cryptowallet.adapters.PortfolioAdapter;
 import com.cse2216.cryptowallet.classes.domain.Coin;
+import com.cse2216.cryptowallet.classes.domain.PortfolioItem;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -54,8 +64,92 @@ public class PortfolioFragment extends Fragment implements SwipeRefreshLayout.On
         portfolioItemRecyclerView.setHasFixedSize(true);
         updateList();
         setupTouchSwipe();
+        processFloatingButton();
         for(int i = 0; i < rootActivity.user.portfolioItems.size(); i++) recyclerMenuStatus.add(false);
         return rootView;
+    }
+
+    private void processFloatingButton() {
+        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.floatingActionButton);
+        if(fab == null){
+            Log.i("TAG", "Fab is null");
+            return;
+        }
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog dialog = new Dialog(rootActivity);
+                dialog.setContentView(R.layout.dialog_add_coin);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                EditText buyingPrice = dialog.findViewById(R.id.add_buy_price);
+                EditText quantity = dialog.findViewById(R.id.add_quantity);
+                TextView confirmButton = dialog.findViewById(R.id.add_confirm_button);
+                TextView cancelButton = dialog.findViewById(R.id.add_cancel_button);
+
+                TextInputLayout textInputLayout = (TextInputLayout) dialog.findViewById(R.id.add_dropdown);
+                AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) dialog.findViewById(R.id.dropdown_autocomplete);
+                ArrayList<String> coins = new ArrayList<String>();
+                for(Coin coin : rootActivity.coins){
+                    coins.add(coin.getName());
+                }
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(rootActivity, R.layout.dropdown_item, coins);
+                autoCompleteTextView.setAdapter(arrayAdapter);
+                autoCompleteTextView.setThreshold(1);
+                dialog.show();
+
+                confirmButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String selectedCoin = autoCompleteTextView.getText().toString();
+                        Coin coin = getCoin(selectedCoin);
+                        if(coin != null){
+                            dialog.dismiss();
+                            Double newBuyingPrice, newPosition;
+                            int index = atPortfolio(selectedCoin);
+                            newBuyingPrice = Double.parseDouble(buyingPrice.getText().toString());
+                            newPosition = Double.parseDouble(quantity.getText().toString());
+                            if(index != -1){
+                                newBuyingPrice = (newBuyingPrice * newPosition) + rootActivity.user.portfolioItems.get(index).getBuyingPrice() * rootActivity.user.portfolioItems.get(index).getPosition();
+                                newPosition = newPosition + rootActivity.user.portfolioItems.get(index).getPosition();
+                                newBuyingPrice /= newPosition;
+                                rootActivity.user.portfolioItems.get(index).setPosition(newPosition);
+                                rootActivity.user.portfolioItems.get(index).setBuyingPrice(newBuyingPrice);
+                            }
+                            else{
+                                rootActivity.user.portfolioItems.add(new PortfolioItem(coin, newPosition, newBuyingPrice));
+                                recyclerMenuStatus.add(false);
+                            }
+                            updateList();
+                        }
+                        else {
+                            Toast.makeText(rootActivity, "Entered Cryptocurrency is not in our list!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                cancelButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
+    }
+
+    int atPortfolio(String selectedCoin) {
+        for(int i = 0; i < rootActivity.user.portfolioItems.size(); i++){
+            if(selectedCoin.equals(rootActivity.user.portfolioItems.get(i).getName())) return i;
+        }
+        return -1;
+    }
+
+    Coin getCoin(String selectedCoin) {
+        for(int i = 0; i < rootActivity.coins.size(); i++){
+            if(selectedCoin.equals(rootActivity.coins.get(i).getName())) return rootActivity.coins.get(i);
+        }
+        return null;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -150,11 +244,17 @@ public class PortfolioFragment extends Fragment implements SwipeRefreshLayout.On
             //rootActivity.user.portfolioItems.get(i).setLatestPrice(rand.nextDouble() * 100);
         }
         if(portfolioAdapter == null){
-            portfolioAdapter = new PortfolioAdapter(rootActivity.user.portfolioItems, recyclerMenuStatus, rootActivity);
+            portfolioAdapter = new PortfolioAdapter(recyclerMenuStatus, rootActivity);
             portfolioItemRecyclerView.setAdapter(portfolioAdapter);
         }
         else portfolioAdapter.notifyDataSetChanged();
-//        portfolioItemRecyclerView.setAdapter(new PortfolioAdapter(rootActivity.user.portfolioItems));
         swipeRefreshLayout.setRefreshing(false);
+//        new Handler().postDelayed(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//
+//            }
+//        }, 2000);
     }
 }
