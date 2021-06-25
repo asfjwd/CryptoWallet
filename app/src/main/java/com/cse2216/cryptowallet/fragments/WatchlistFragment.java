@@ -23,6 +23,7 @@ public class WatchlistFragment extends Fragment implements SwipeRefreshLayout.On
     private View rootView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView watchListRecyclerView;
+    WatchListAdapter watchListAdapter;
     MainActivity rootActivity;
 
     @Nullable
@@ -32,22 +33,12 @@ public class WatchlistFragment extends Fragment implements SwipeRefreshLayout.On
         rootView = inflater.inflate(R.layout.watchlist_fragment_layout,container,false);
         rootActivity = (MainActivity) getActivity();
         watchListRecyclerView = rootView.findViewById(R.id.watchlist_fragment);
-        if(rootView == null){
-            System.out.println("NULL FOund");
-        }
         swipeRefreshLayout = rootView.findViewById(R.id.watchlist_fragment_swipe_refresh);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         swipeRefreshLayout.setOnRefreshListener(this);
         watchListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         watchListRecyclerView.setHasFixedSize(true);
-        watchListRecyclerView.setAdapter(new WatchListAdapter(rootActivity.coins, rootActivity.user.watchList,rootActivity));
-        swipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshLayout.setRefreshing(true);
-                updateList();
-            }
-        });
+        updateList();
         return rootView;
     }
 
@@ -62,7 +53,11 @@ public class WatchlistFragment extends Fragment implements SwipeRefreshLayout.On
     private void updateList() {
         swipeRefreshLayout.setRefreshing(true);
         rootActivity.lunarAPI.updateCoins();
-        watchListRecyclerView.setAdapter(new WatchListAdapter(rootActivity.coins, rootActivity.user.watchList,rootActivity));
+        if(watchListAdapter == null){
+            watchListAdapter = new WatchListAdapter(rootActivity);
+            watchListRecyclerView.setAdapter(watchListAdapter);
+        }
+        else watchListAdapter.notifyDataSetChanged();
         swipeRefreshLayout.setRefreshing(false);
     }
 

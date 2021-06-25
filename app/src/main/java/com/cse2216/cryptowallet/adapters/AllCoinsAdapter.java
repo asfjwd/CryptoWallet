@@ -1,7 +1,6 @@
 package com.cse2216.cryptowallet.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,8 +55,8 @@ public class AllCoinsAdapter extends RecyclerView.Adapter<AllCoinsAdapter.AllCoi
     public void onBindViewHolder(@NonNull @NotNull AllCoinsAdapter.AllCoinsViewHolder holder, int position) {
         String symbol = allCoins.get(position).getSymbol();
         holder.imgIcon.setImageResource(context.getResources().getIdentifier(symbol.toLowerCase(),"drawable", context.getPackageName()));
-        holder.imgIcon.getLayoutParams().height =150 ;
-        holder.imgIcon.getLayoutParams().width = 150 ;
+        holder.imgIcon.getLayoutParams().height = 150;
+        holder.imgIcon.getLayoutParams().width =  150;
 
         holder.currencyName.setText(allCoins.get(position).getName());
         holder.ltp.setText(String.format("%.2f", allCoins.get(position).getLatestPrice()) + " $");

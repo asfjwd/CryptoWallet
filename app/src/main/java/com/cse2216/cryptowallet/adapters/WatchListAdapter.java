@@ -1,7 +1,7 @@
 package com.cse2216.cryptowallet.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cse2216.cryptowallet.R;
+import com.cse2216.cryptowallet.activities.MainActivity;
 import com.cse2216.cryptowallet.classes.domain.Coin;
 
 import org.jetbrains.annotations.NotNull;
@@ -26,12 +27,12 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.Watc
     String leftSymbol = Character.toString((char)(8605));
     Context context;
     List<Coin> allCoins;
-    ArrayList<Integer> watchList;
+    public ArrayList<Integer> watchList;
 
-    public WatchListAdapter(List<Coin> allCoins, ArrayList<Integer> watchList, Context context){
-        this.allCoins = allCoins;
-        this.watchList = watchList;
-        this.context = context;
+    public WatchListAdapter(MainActivity activity){
+        this.allCoins = activity.coins;
+        this.watchList = activity.user.watchList;
+        this.context = activity;
     }
 
     public WatchListViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
@@ -43,7 +44,7 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.Watc
     @Override
     public void onBindViewHolder(@NonNull @NotNull WatchListAdapter.WatchListViewHolder holder, int pos) {
 
-        String symbol = allCoins.get(pos).getSymbol();
+        String symbol = allCoins.get(watchList.get(pos)).getSymbol();
         holder.imgIcon.setImageResource(context.getResources().getIdentifier(symbol.toLowerCase(),"drawable", context.getPackageName()));
         holder.imgIcon.getLayoutParams().height =150 ;
         holder.imgIcon.getLayoutParams().width = 150 ;

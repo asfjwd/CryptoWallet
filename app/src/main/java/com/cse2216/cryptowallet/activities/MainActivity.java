@@ -2,22 +2,22 @@ package com.cse2216.cryptowallet.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.cse2216.cryptowallet.R;
-import com.cse2216.cryptowallet.adapters.AllCoinsAdapter;
 import com.cse2216.cryptowallet.adapters.MainPageAdapter;
 import com.cse2216.cryptowallet.classes.domain.Coin;
 import com.cse2216.cryptowallet.classes.domain.PortfolioItem;
 import com.cse2216.cryptowallet.classes.domain.UserInfo;
 import com.cse2216.cryptowallet.classes.helper.LunarAPI;
-import com.cse2216.cryptowallet.fragments.AllCoinsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
@@ -34,39 +34,39 @@ public class MainActivity extends AppCompatActivity {
     public static UserInfo user;
     public LunarAPI lunarAPI ;
     private TextView titleButton;
+    boolean doubleBackToExitPressedOnce = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         lunarAPI = new LunarAPI(this);
+        populateData();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         MainPageAdapter MainPageAdapter = new MainPageAdapter(this, getSupportFragmentManager());
         titleButton = (TextView) findViewById(R.id.title) ;
-        titleButton.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Log.d("TitleButton", "titlebuttonpressed");
-                startLandingActivity();
-                return false;
-            }
+                titleButton.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        Log.d("TitleButton", "titlebuttonpressed");
+                        startLandingActivity();
+                        return false;
+                    }
 
-        });
-        ViewPager viewPager = findViewById(R.id.view_pager);
-        viewPager.setAdapter(MainPageAdapter);
-        viewPager.setOffscreenPageLimit(3);
-        TabLayout tabs = findViewById(R.id.tabs);
-        tabs.setupWithViewPager(viewPager);
-        tabs.getTabAt(1).select();
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        try{
-            Log.d("intent",mAuth.getCurrentUser().getEmail());
-            Log.d("intent" , getIntent().getExtras().getString("loginType"));
-        }
-        catch(Exception e) {
+                });
+                ViewPager viewPager = findViewById(R.id.view_pager);
+                viewPager.setAdapter(MainPageAdapter);
+                viewPager.setOffscreenPageLimit(3);
+                TabLayout tabs = findViewById(R.id.tabs);
+                tabs.setupWithViewPager(viewPager);
+                tabs.getTabAt(1).select();
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                try{
+                    Log.d("intent",mAuth.getCurrentUser().getEmail());
+                    Log.d("intent" , getIntent().getExtras().getString("loginType"));
+                }
+                catch(Exception e) {
 
-        }
-        lunarAPI.updateCoins();
-        populateData();
+                }
+                lunarAPI.updateCoins();
     }
     private void populateData() {
 //        hardcode or from database
@@ -90,8 +90,11 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else {
                     UserInfo dummyUser = task.getResult().getValue(UserInfo.class);
-                    user = new UserInfo(dummyUser.getEmail(), dummyUser.getToken(), pfList, dummyUser.getWatchList());
-                    AllCoinsFragment.allCoinsItemRecyclerView.setAdapter(new AllCoinsAdapter(MainActivity.coins, user.watchList,MainActivity.this));
+                    user.setEmail(dummyUser.getEmail());
+                    user.setToken(dummyUser.getToken());
+                    user.setPortfolioItems(pfList);
+                    user.setWatchList(dummyUser.getWatchList());
+//                    AllCoinsFragment.allCoinsItemRecyclerView.setAdapter(new AllCoinsAdapter(MainActivity.this));
                     firebaseDatabase.getReference("UserInfo").child(userToken).setValue(dummyUser);
                     Log.d("firebase", dummyUser.toString());
                 }
@@ -113,7 +116,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        doubleBackToExitPressedOnce = false;
+    }
+
+    @Override
     public void onBackPressed() {
-        moveTaskToBack(true);
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            moveTaskToBack(true);
+            return;
+        }
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
 }
