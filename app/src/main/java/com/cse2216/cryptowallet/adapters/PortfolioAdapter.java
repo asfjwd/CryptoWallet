@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cse2216.cryptowallet.R;
+import com.cse2216.cryptowallet.activities.MainActivity;
 import com.cse2216.cryptowallet.classes.domain.PortfolioItem;
 
 import org.jetbrains.annotations.NotNull;
@@ -29,8 +30,6 @@ public class PortfolioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     String upArrow = Character.toString((char)(8593));
     String downArrow = Character.toString((char)(8595));
     String leftSymbol = Character.toString((char)(8605));
-    Integer negativeRed = Color.parseColor("#FF1744");
-    Integer positiveGreen = Color.parseColor("#00E676");
 
     Context context;
     List<PortfolioItem> portfolioItems;
@@ -39,10 +38,10 @@ public class PortfolioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private final int SHOW_MENU = 1;
     private final int HIDE_MENU = 2;
 
-    public PortfolioAdapter(List<PortfolioItem> portfolioItems, List<Boolean> recyclerMenuStatus, Context context){
-        this.portfolioItems = portfolioItems;
+    public PortfolioAdapter(List<Boolean> recyclerMenuStatus, MainActivity activity){
+        this.portfolioItems = activity.user.portfolioItems;
         this.recyclerMenuStatus = recyclerMenuStatus;
-        this.context = context;
+        this.context = activity;
     }
 
     @Override
@@ -132,25 +131,26 @@ public class PortfolioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ((PortfolioViewHolder) holder).position.setText(String.format("%.2f", portfolioItems.get(position).getPosition()));
             Double gain = portfolioItems.get(position).getGain();
             Double gainPercentage = portfolioItems.get(position).getGainPercentage();
-            ((PortfolioViewHolder) holder).gain.setText(String.format("%.2f", gain));
+            ((PortfolioViewHolder) holder).gain.setText(String.format("%.2f", gain) + " $");
+            ((PortfolioViewHolder) holder).gain.setTypeface(null, Typeface.ITALIC);
             ((PortfolioViewHolder) holder).gainPercentage.setText(String.format("%.2f", gainPercentage) + " %");
             ((PortfolioViewHolder) holder).gainPercentage.setTypeface(null, Typeface.ITALIC);
             ((PortfolioViewHolder) holder).leftSymbol.setText(leftSymbol);
             if(gain > 0){
                 ((PortfolioViewHolder) holder).leftSymbol.setScaleY(1);
-                ((PortfolioViewHolder) holder).gain.setTextColor(positiveGreen);
-                ((PortfolioViewHolder) holder).gainPercentage.setTextColor(positiveGreen);
+                ((PortfolioViewHolder) holder).gain.setTextColor(context.getColor(R.color.positiveGreen));
+                ((PortfolioViewHolder) holder).gainPercentage.setTextColor(context.getColor(R.color.positiveGreen));
                 ((PortfolioViewHolder) holder).arrow.setText(upArrow);
-                ((PortfolioViewHolder) holder).arrow.setTextColor(positiveGreen);
-                ((PortfolioViewHolder) holder).leftSymbol.setTextColor(positiveGreen);
+                ((PortfolioViewHolder) holder).arrow.setTextColor(context.getColor(R.color.positiveGreen));
+                ((PortfolioViewHolder) holder).leftSymbol.setTextColor(context.getColor(R.color.positiveGreen));
             }
             else {
                 ((PortfolioViewHolder) holder).leftSymbol.setScaleY(-1);
-                ((PortfolioViewHolder) holder).gain.setTextColor(negativeRed);
-                ((PortfolioViewHolder) holder).gainPercentage.setTextColor(negativeRed);
+                ((PortfolioViewHolder) holder).gain.setTextColor(context.getColor(R.color.negativeRed));
+                ((PortfolioViewHolder) holder).gainPercentage.setTextColor(context.getColor(R.color.negativeRed));
                 ((PortfolioViewHolder) holder).arrow.setText(downArrow);
-                ((PortfolioViewHolder) holder).arrow.setTextColor(negativeRed);
-                ((PortfolioViewHolder) holder).leftSymbol.setTextColor(negativeRed);
+                ((PortfolioViewHolder) holder).arrow.setTextColor(context.getColor(R.color.negativeRed));
+                ((PortfolioViewHolder) holder).leftSymbol.setTextColor(context.getColor(R.color.negativeRed));
             }
             String symbol = portfolioItems.get(position).getSymbol();
             ((PortfolioViewHolder) holder).imgIcon.setImageResource(context.getResources().getIdentifier(symbol.toLowerCase(),"drawable", context.getPackageName()));

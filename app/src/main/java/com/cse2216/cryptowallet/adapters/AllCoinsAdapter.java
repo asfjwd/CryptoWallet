@@ -17,13 +17,11 @@ import com.cse2216.cryptowallet.R;
 import com.cse2216.cryptowallet.activities.MainActivity;
 import com.cse2216.cryptowallet.classes.domain.Coin;
 import com.cse2216.cryptowallet.classes.domain.UserInfo;
-import com.cse2216.cryptowallet.fragments.AllCoinsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
@@ -37,17 +35,15 @@ public class AllCoinsAdapter extends RecyclerView.Adapter<AllCoinsAdapter.AllCoi
     String upArrow = Character.toString((char)(8593));
     String downArrow = Character.toString((char)(8595));
     String leftSymbol = Character.toString((char)(8605));
-    Integer negativeRed = Color.parseColor("#FF1744");
-    Integer positiveGreen = Color.parseColor("#00E676");
 
     List<Coin> allCoins;
     ArrayList<Integer> watchList;
     Context context;
 
-    public AllCoinsAdapter(List<Coin> allCoins, ArrayList<Integer> watchList, Context context){
-        this.allCoins = allCoins;
-        this.watchList = watchList;
-        this.context = context;
+    public AllCoinsAdapter(MainActivity activity){
+        this.allCoins = activity.coins;
+        this.watchList = activity.user.watchList;
+        this.context = activity;
     }
 
     public AllCoinsViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
@@ -82,16 +78,18 @@ public class AllCoinsAdapter extends RecyclerView.Adapter<AllCoinsAdapter.AllCoi
         }
 
         if(change_24hr > 0){
-            holder.change_24hr.setTextColor(positiveGreen);
+            holder.change_24hr.setTextColor(context.getColor(R.color.positiveGreen));
             holder.arrow.setText(upArrow);
-            holder.arrow.setTextColor(positiveGreen);
-            holder.leftSymbol.setTextColor(positiveGreen);
+            holder.arrow.setTextColor(context.getColor(R.color.positiveGreen));
+            holder.leftSymbol.setTextColor(context.getColor(R.color.positiveGreen));
+            holder.leftSymbol.setScaleY(1);
         }
         else {
-            holder.change_24hr.setTextColor(negativeRed);
+            holder.change_24hr.setTextColor(context.getColor(R.color.negativeRed));
             holder.arrow.setText(downArrow);
-            holder.arrow.setTextColor(negativeRed);
-            holder.leftSymbol.setTextColor(negativeRed);
+            holder.arrow.setTextColor(context.getColor(R.color.negativeRed));
+            holder.leftSymbol.setTextColor(context.getColor(R.color.negativeRed));
+            holder.leftSymbol.setScaleY(-1);
         }
 
 
@@ -128,9 +126,6 @@ public class AllCoinsAdapter extends RecyclerView.Adapter<AllCoinsAdapter.AllCoi
                         }
                     }
                 });
-
-
-
             }
         });
     }

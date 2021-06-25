@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cse2216.cryptowallet.R;
-import com.cse2216.cryptowallet.activities.MainActivity;
 import com.cse2216.cryptowallet.classes.domain.Coin;
 
 import org.jetbrains.annotations.NotNull;
@@ -25,8 +24,6 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.Watc
     String upArrow = Character.toString((char)(8593));
     String downArrow = Character.toString((char)(8595));
     String leftSymbol = Character.toString((char)(8605));
-    Integer negativeRed = Color.parseColor("#FF1744");
-    Integer positiveGreen = Color.parseColor("#00E676");
     Context context;
     List<Coin> allCoins;
     ArrayList<Integer> watchList;
@@ -60,16 +57,18 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.Watc
         holder.volume.setText(String.format("%.2f", allCoins.get(position).getVolume()) + " $");
         holder.leftSymbol.setText(leftSymbol);
         if(change_24hr > 0){
-            holder.change_24hr.setTextColor(positiveGreen);
+            holder.change_24hr.setTextColor(context.getColor(R.color.positiveGreen));
             holder.arrow.setText(upArrow);
-            holder.arrow.setTextColor(positiveGreen);
-            holder.leftSymbol.setTextColor(positiveGreen);
+            holder.arrow.setTextColor(context.getColor(R.color.positiveGreen));
+            holder.leftSymbol.setTextColor(context.getColor(R.color.positiveGreen));
+            holder.leftSymbol.setScaleY(1);
         }
         else {
-            holder.change_24hr.setTextColor(negativeRed);
+            holder.change_24hr.setTextColor(context.getColor(R.color.negativeRed));
             holder.arrow.setText(downArrow);
-            holder.arrow.setTextColor(negativeRed);
-            holder.leftSymbol.setTextColor(negativeRed);
+            holder.arrow.setTextColor(context.getColor(R.color.negativeRed));
+            holder.leftSymbol.setTextColor(context.getColor(R.color.negativeRed));
+            holder.leftSymbol.setScaleY(-1);
         }
     }
 
