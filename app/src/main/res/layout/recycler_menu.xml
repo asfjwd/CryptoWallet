@@ -29,8 +29,8 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
-            android:scaleX=".65"
-            android:scaleY=".65"
+            android:scaleX=".70"
+            android:scaleY=".70"
             android:src="@drawable/ic_back_button"
             android:tint="@color/white" />
 
@@ -61,8 +61,8 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
-            android:scaleX=".65"
-            android:scaleY=".65"
+            android:scaleX=".70"
+            android:scaleY=".70"
             android:src="@drawable/ic_cash_out"
             android:tint="@color/white" />
 
@@ -93,8 +93,8 @@
             android:id="@+id/recycler_menu_delete"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:scaleX=".65"
-            android:scaleY=".65"
+            android:scaleX=".70"
+            android:scaleY=".70"
             android:src="@drawable/ic_remove_item"
             app:tint="@color/white" />
 
