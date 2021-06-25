@@ -33,7 +33,7 @@
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/watchlist_logo_title"
-            android:layout_width="wrap_content"
+            android:layout_width="95dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_toRightOf="@id/watchlist_left_symbol">

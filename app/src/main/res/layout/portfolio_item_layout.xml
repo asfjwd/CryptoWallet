@@ -32,7 +32,7 @@
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/portfolio_logo_title"
-            android:layout_width="wrap_content"
+            android:layout_width="95dp"
             android:layout_height="100dp"
             android:orientation="vertical"
             android:layout_toRightOf="@id/portfolio_left_symbol">

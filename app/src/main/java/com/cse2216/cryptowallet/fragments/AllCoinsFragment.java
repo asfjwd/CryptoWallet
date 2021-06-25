@@ -40,7 +40,7 @@ public class AllCoinsFragment extends Fragment implements SwipeRefreshLayout.OnR
     public View onCreateView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.all_coins_fragment_layout,container,false);
         rootActivity = (MainActivity) getActivity();
-        adapter = new AllCoinsAdapter(rootActivity.coins , rootActivity.user.watchList );
+        adapter = new AllCoinsAdapter(rootActivity.coins , rootActivity.user.watchList ,rootActivity);
 
         allCoinsItemRecyclerView = rootView.findViewById(R.id.all_coins_fragment);
         swipeRefreshLayout = rootView.findViewById(R.id.all_coins_fragment_swipe_refresh);
@@ -48,7 +48,7 @@ public class AllCoinsFragment extends Fragment implements SwipeRefreshLayout.OnR
         swipeRefreshLayout.setOnRefreshListener(this);
         allCoinsItemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         allCoinsItemRecyclerView.setHasFixedSize(true);
-        allCoinsItemRecyclerView.setAdapter(new AllCoinsAdapter(rootActivity.coins, rootActivity.user.watchList));
+        allCoinsItemRecyclerView.setAdapter(new AllCoinsAdapter(rootActivity.coins, rootActivity.user.watchList , rootActivity));
         Log.d("Call" , "onCreateView Called");
         swipeRefreshLayout.post(new Runnable() {
             @Override
@@ -70,7 +70,7 @@ public class AllCoinsFragment extends Fragment implements SwipeRefreshLayout.OnR
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 swipeRefreshLayout.setRefreshing(true);
-                allCoinsItemRecyclerView.setAdapter(new AllCoinsAdapter(rootActivity.coins, rootActivity.user.watchList));
+                allCoinsItemRecyclerView.setAdapter(new AllCoinsAdapter(rootActivity.coins, rootActivity.user.watchList,rootActivity));
                 swipeRefreshLayout.setRefreshing(false);
             }
 

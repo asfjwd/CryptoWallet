@@ -152,6 +152,10 @@ public class PortfolioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 ((PortfolioViewHolder) holder).arrow.setTextColor(negativeRed);
                 ((PortfolioViewHolder) holder).leftSymbol.setTextColor(negativeRed);
             }
+            String symbol = portfolioItems.get(position).getSymbol();
+            ((PortfolioViewHolder) holder).imgIcon.setImageResource(context.getResources().getIdentifier(symbol.toLowerCase(),"drawable", context.getPackageName()));
+            ((PortfolioViewHolder) holder).imgIcon.getLayoutParams().height =150 ;
+            ((PortfolioViewHolder) holder).imgIcon.getLayoutParams().width = 150 ;
         }
     }
 

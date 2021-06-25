@@ -40,7 +40,7 @@ public class WatchlistFragment extends Fragment implements SwipeRefreshLayout.On
         swipeRefreshLayout.setOnRefreshListener(this);
         watchListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         watchListRecyclerView.setHasFixedSize(true);
-        watchListRecyclerView.setAdapter(new WatchListAdapter(rootActivity.coins, rootActivity.user.watchList));
+        watchListRecyclerView.setAdapter(new WatchListAdapter(rootActivity.coins, rootActivity.user.watchList,rootActivity));
         swipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -62,7 +62,7 @@ public class WatchlistFragment extends Fragment implements SwipeRefreshLayout.On
     private void updateList() {
         swipeRefreshLayout.setRefreshing(true);
         rootActivity.lunarAPI.updateCoins();
-        watchListRecyclerView.setAdapter(new WatchListAdapter(rootActivity.coins, rootActivity.user.watchList));
+        watchListRecyclerView.setAdapter(new WatchListAdapter(rootActivity.coins, rootActivity.user.watchList,rootActivity));
         swipeRefreshLayout.setRefreshing(false);
     }
 
