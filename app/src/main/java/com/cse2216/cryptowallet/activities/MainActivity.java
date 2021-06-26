@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         FirebaseAuth moth = FirebaseAuth.getInstance();
         if(moth.getCurrentUser()==null){
+            Log.d("Force", "Forceloggedout");
             startLandingActivity();
         }
         doubleBackToExitPressedOnce = false;

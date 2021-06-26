@@ -19,6 +19,8 @@ import androidx.fragment.app.Fragment;
 import com.cse2216.cryptowallet.R;
 import com.cse2216.cryptowallet.activities.LandingPageActivity;
 import com.cse2216.cryptowallet.activities.MainActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.jetbrains.annotations.NotNull;
@@ -76,6 +78,30 @@ public class LoginTabFragment extends Fragment {
 
     private void resetPassword() {
         Log.i(TAG, "Resetting Password");
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        if(email.getText().toString().isEmpty()){
+            Toast.makeText(rootActivity, "Email Field is Empty!", Toast.LENGTH_SHORT).show();
+            return ;
+        }
+
+
+        String emailAddress = email.getText().toString();
+
+        auth.sendPasswordResetEmail(emailAddress)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(rootActivity, "Email is sent!", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "Email sent.");
+                        }
+                        else{
+                            Toast.makeText(rootActivity, "No account with this email found!", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "Email send failure.");
+
+                        }
+                    }
+                });
     }
 
     private void startMainActivity() {
