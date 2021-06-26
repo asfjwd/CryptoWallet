@@ -18,65 +18,36 @@
         app:layout_constraintTop_toTopOf="parent"
         android:background="@color/colorPrimary">
     </View>
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:src="@drawable/ic_cryptocurrency_bw"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/landing_top_view"
-        app:layout_constraintVertical_bias="0.251"
-        app:tint="@color/white" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Welcome to CryptoWallet!"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-        app:layout_constraintEnd_toEndOf="@+id/landing_top_view"
-        app:layout_constraintStart_toStartOf="@+id/landing_top_view"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2"
-        app:layout_constraintVertical_bias="0.265" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@drawable/landing_page_shape"
+        app:layout_constraintHeight_percent=".78"
+        app:layout_constraintVertical_bias="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent=".78"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1">
-
+        android:background="@drawable/landing_page_shape">
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/landing_viewpager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            app:layout_constraintVertical_bias="0"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/landing_tablayout"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent=".7"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0" />
-
+            app:layout_constraintHeight_percent=".7"
+            app:layout_constraintBottom_toTopOf="@id/landing_tablayout"/>
         <com.google.android.material.tabs.TabLayout
+            android:background="@drawable/landing_page_shape"
             android:id="@+id/landing_tablayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/landing_page_shape"
+            app:layout_constraintVertical_bias="0"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0" />
+            app:layout_constraintTop_toTopOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
