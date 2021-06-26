@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -208,13 +209,13 @@ public class PortfolioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public class MenuViewHolder extends RecyclerView.ViewHolder{
-        ImageView back, cashout, remove;
+        LinearLayout back, cashout, remove;
         public MenuViewHolder(View itemView){
 
             super(itemView);
-            back = itemView.findViewById(R.id.recycler_menu_return);
-            cashout = itemView.findViewById(R.id.recycler_menu_cashout);
-            remove = itemView.findViewById(R.id.recycler_menu_delete);
+            back = itemView.findViewById(R.id.linearLayout_return);
+            cashout = itemView.findViewById(R.id.linearLayout_cashout);
+            remove = itemView.findViewById(R.id.linearLayout_delete);
         }
     }
 }
