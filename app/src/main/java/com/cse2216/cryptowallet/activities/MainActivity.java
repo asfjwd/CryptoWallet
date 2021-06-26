@@ -115,6 +115,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        FirebaseAuth moth = FirebaseAuth.getInstance();
+        if(moth.getCurrentUser()==null){
+            startLandingActivity();
+        }
         doubleBackToExitPressedOnce = false;
     }
 
