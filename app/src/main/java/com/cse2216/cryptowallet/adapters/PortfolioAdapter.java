@@ -69,6 +69,19 @@ public class PortfolioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
+    String parseDouble(Double val){
+
+        final double highLimit = 1e8, lowLimit = 1e5;
+
+        if(val > highLimit){
+            return String.format("%.2fM", val / 1000000.0);
+        }
+        else if(val > lowLimit){
+            return String.format("%.2fK", val / 1000.0);
+        }
+        return String.format("%.2f", val);
+    }
+
     @Override
     public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof MenuViewHolder){
@@ -126,15 +139,15 @@ public class PortfolioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             });
         }
         else {
-            ((PortfolioViewHolder) holder).buyPrice.setText(String.format("%.2f", portfolioItems.get(position).getBuyingPrice()) + " $");
-            ((PortfolioViewHolder) holder).ltp.setText(String.format("%.2f", portfolioItems.get(position).getLatestPrice()) + " $");
+            ((PortfolioViewHolder) holder).buyPrice.setText(parseDouble(portfolioItems.get(position).getBuyingPrice()) + " $");
+            ((PortfolioViewHolder) holder).ltp.setText(parseDouble(portfolioItems.get(position).getLatestPrice()) + " $");
             ((PortfolioViewHolder) holder).currencyName.setText(portfolioItems.get(position).getName());
-            ((PortfolioViewHolder) holder).position.setText(String.format("%.2f", portfolioItems.get(position).getPosition()));
+            ((PortfolioViewHolder) holder).position.setText(parseDouble(portfolioItems.get(position).getPosition()));
             Double gain = portfolioItems.get(position).getGain();
             Double gainPercentage = portfolioItems.get(position).getGainPercentage();
-            ((PortfolioViewHolder) holder).gain.setText(String.format("%.2f", gain) + " $");
+            ((PortfolioViewHolder) holder).gain.setText(parseDouble(gain) + " $");
             ((PortfolioViewHolder) holder).gain.setTypeface(null, Typeface.ITALIC);
-            ((PortfolioViewHolder) holder).gainPercentage.setText(String.format("%.2f", gainPercentage) + " %");
+            ((PortfolioViewHolder) holder).gainPercentage.setText(parseDouble(gainPercentage) + " %");
             ((PortfolioViewHolder) holder).gainPercentage.setTypeface(null, Typeface.ITALIC);
             ((PortfolioViewHolder) holder).leftSymbol.setText(leftSymbol);
             if(gain > 0){

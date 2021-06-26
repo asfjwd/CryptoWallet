@@ -41,6 +41,19 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.Watc
         return new WatchListViewHolder(view);
     }
 
+    String parseDouble(Double val){
+
+        final double highLimit = 1e8, lowLimit = 1e5;
+
+        if(val > highLimit){
+            return String.format("%.2fM", val / 1000000.0);
+        }
+        else if(val > lowLimit){
+            return String.format("%.2fK", val / 1000.0);
+        }
+        return String.format("%.2f", val);
+    }
+
     @Override
     public void onBindViewHolder(@NonNull @NotNull WatchListAdapter.WatchListViewHolder holder, int pos) {
 
@@ -52,10 +65,10 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.Watc
 
         int position = watchList.get(pos);
         holder.currencyName.setText(allCoins.get(position).getName());
-        holder.ltp.setText(String.format("%.2f", allCoins.get(position).getLatestPrice()) + " $");
+        holder.ltp.setText(parseDouble(allCoins.get(position).getLatestPrice()) + " $");
         Double change_24hr = allCoins.get(position).getChange();
-        holder.change_24hr.setText(String.format("%.2f", change_24hr) + " %");
-        holder.volume.setText(String.format("%.2f", allCoins.get(position).getVolume()) + " $");
+        holder.change_24hr.setText(parseDouble(change_24hr) + " %");
+        holder.volume.setText(parseDouble(allCoins.get(position).getVolume()) + " $");
         holder.leftSymbol.setText(leftSymbol);
         if(change_24hr > 0){
             holder.change_24hr.setTextColor(context.getColor(R.color.positiveGreen));
