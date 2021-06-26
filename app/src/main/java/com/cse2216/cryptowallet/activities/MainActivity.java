@@ -43,6 +43,12 @@ public class MainActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        FirebaseAuth moth = FirebaseAuth.getInstance();
+
+        if(moth.getCurrentUser()==null){
+            startLandingActivity();
+        }
         lunarAPI = new LunarAPI(this);
         populateData();
         super.onCreate(savedInstanceState);
@@ -100,7 +106,8 @@ public class MainActivity extends AppCompatActivity {
        // System.out.println("Starting Activity");
         Intent intent = new Intent( MainActivity.this , LandingPageActivity.class);
         FirebaseAuth mAuth= FirebaseAuth.getInstance();
-        mAuth.signOut();
+        if(mAuth.getCurrentUser()!=null)
+            mAuth.signOut();
         intent.putExtra("loginType", "loggedout"); //sending email to MainActivity
         startActivity(intent);
     }
