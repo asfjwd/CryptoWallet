@@ -123,7 +123,7 @@ public class PortfolioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                             if(new_position < 0){
                                 Toast.makeText(context, "Your position is smaller than " + amount.getText(), Toast.LENGTH_SHORT).show();
                             }
-                            else {
+                            else if(new_position > 0){
                                 dialog.dismiss();
                                 portfolioItems.get(position).setPosition(new_position);
 
@@ -154,6 +154,29 @@ public class PortfolioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 
 
+                                notifyDataSetChanged();
+                            }
+                            else {
+                                dialog.dismiss();
+                                portfolioItems.remove(position);
+                                recyclerMenuStatus.remove(position);
+
+                                String userToken = FirebaseAuth.getInstance().getCurrentUser().getUid() ;
+                                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance() ;
+                                firebaseDatabase.getReference("UserInfo").child(userToken).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                        if (!task.isSuccessful()) {
+                                            Log.e("firebase", "Error getting data", task.getException());
+                                        }
+                                        else {
+                                            UserInfo dummyUser = task.getResult().getValue(UserInfo.class);
+                                            dummyUser.setPortfolioItems(portfolioItems);
+                                            firebaseDatabase.getReference("UserInfo").child(userToken).setValue(dummyUser);
+                                            Log.d("firebase", dummyUser.toString());
+                                        }
+                                    }
+                                });
                                 notifyDataSetChanged();
                             }
                         }
