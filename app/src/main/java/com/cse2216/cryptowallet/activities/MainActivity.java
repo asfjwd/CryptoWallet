@@ -69,16 +69,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private void populateData() {
 //        hardcode or from database
-        ArrayList<PortfolioItem> pfList = new ArrayList<PortfolioItem>();
-        pfList.add(0, new PortfolioItem("Bitcoin", "" ,"BTC", 1, 0.0, 0.0, 0.0, 100.0, 50.0));
-        pfList.add(1, new PortfolioItem("Ethereum", "","ETH", 2, 0.0, 0.0, 0.0, 100.0, 30.0));
-        pfList.add(2, new PortfolioItem("Tether", "","USDT", 3, 0.0, 0.0, 0.0, 100.0, 056.0));
-        pfList.add(3, new PortfolioItem("Binance Coin", "","BNB" ,3, 0.0, 0.0, 0.0, 100.0, 023.0));
-        pfList.add(4, new PortfolioItem("Cardano", "", "ADA",4, 0.0, 0.0, 0.0, 100.0, 01.0));
-        pfList.add(5, new PortfolioItem("Litecoin", "","LTC", 5, 0.0, 0.0, 0.0, 100.0, 032.0));
-        pfList.add(6, new PortfolioItem("Bitcoin Cash", "", "BCH",6, 0.0, 0.0, 0.0, 100.0, 012.0));
-        pfList.add(7, new PortfolioItem("Polkadot", "","DOT", 7, 0.0, 0.0, 0.0, 100.0, 03.0));
-        user = new UserInfo("x","x",pfList,new ArrayList <Integer >());
+        user = new UserInfo("x","x",new ArrayList<PortfolioItem>(),new ArrayList <Integer >());
         String userToken = FirebaseAuth.getInstance().getCurrentUser().getUid() ;
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance() ;
         firebaseDatabase.getReference("UserInfo").child(userToken).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -91,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                     UserInfo dummyUser = task.getResult().getValue(UserInfo.class);
                     user.setEmail(dummyUser.getEmail());
                     user.setToken(dummyUser.getToken());
-                    user.setPortfolioItems(pfList);
+                    user.setPortfolioItems(dummyUser.getPortfolioItems());
                     user.setWatchList(dummyUser.getWatchList());
 //                    AllCoinsFragment.allCoinsItemRecyclerView.setAdapter(new AllCoinsAdapter(MainActivity.this));
                     firebaseDatabase.getReference("UserInfo").child(userToken).setValue(dummyUser);

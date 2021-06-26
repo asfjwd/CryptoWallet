@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,8 +32,14 @@ import com.cse2216.cryptowallet.activities.MainActivity;
 import com.cse2216.cryptowallet.adapters.PortfolioAdapter;
 import com.cse2216.cryptowallet.classes.domain.Coin;
 import com.cse2216.cryptowallet.classes.domain.PortfolioItem;
+import com.cse2216.cryptowallet.classes.domain.UserInfo;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -66,7 +73,16 @@ public class PortfolioFragment extends Fragment implements SwipeRefreshLayout.On
         updateList();
         setupTouchSwipe();
         processFloatingButton();
-        for(int i = 0; i < rootActivity.user.portfolioItems.size(); i++) recyclerMenuStatus.add(false);
+        Log.d("portStatus","testing");
+        try {
+
+
+            Log.d("portStatus", "Success");
+        }
+        catch (Exception e){
+
+            Log.d("portStatus","not sueccess");
+        }
         return rootView;
     }
 
@@ -121,7 +137,27 @@ public class PortfolioFragment extends Fragment implements SwipeRefreshLayout.On
                                 rootActivity.user.portfolioItems.add(new PortfolioItem(coin, newPosition, newBuyingPrice));
                                 recyclerMenuStatus.add(false);
                             }
+                            // Updating data to database
+                            String userToken = FirebaseAuth.getInstance().getCurrentUser().getUid() ;
+                            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance() ;
+                            firebaseDatabase.getReference("UserInfo").child(userToken).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                    if (!task.isSuccessful()) {
+                                        Log.e("firebase", "Error getting data", task.getException());
+                                    }
+                                    else {
+                                        UserInfo dummyUser = task.getResult().getValue(UserInfo.class);
+                                        dummyUser.setPortfolioItems(rootActivity.user.getPortfolioItems());
+                                        firebaseDatabase.getReference("UserInfo").child(userToken).setValue(dummyUser);
+                                        Log.d("firebase", dummyUser.toString());
+                                    }
+                                }
+                            });
+                            // Update ends
+                            // Updating UI
                             updateList();
+
                         }
                         else {
                             Toast.makeText(rootActivity, "Entered Cryptocurrency is not in our list!", Toast.LENGTH_SHORT).show();
@@ -228,34 +264,44 @@ public class PortfolioFragment extends Fragment implements SwipeRefreshLayout.On
 
     private void updateList() {
         rootActivity.lunarAPI.updateCoins();
-        swipeRefreshLayout.setRefreshing(true);
-        ArrayList < Coin > coinArrayList = rootActivity.lunarAPI.getCoinArrayList();
-        Random rand = new Random();
-        for(int i = 0; i < rootActivity.user.portfolioItems.size(); i++){
-//            rootActivity.user.portfolioItems.get(i).setBuyingPrice(rand.nextDouble() * 500);
-//            rootActivity.user.portfolioItems.get(i).setPosition(rand.nextDouble() * 100);
-            Log.d("update" ,rootActivity.user.portfolioItems.get(i).getSymbol() );
-            for(int j = 0 ; j < coinArrayList.size() ; j++){
-                Log.d("update" ,coinArrayList.get(j).getSymbol() );
-                // Log.d("update" ,rootActivity.user.portfolioItems.get(i).getSymbol() );
-                if(rootActivity.user.portfolioItems.get(i).getSymbol().equals( coinArrayList.get(j).getSymbol() )){
-                    rootActivity.user.portfolioItems.get(i).setLatestPrice( coinArrayList.get(j).getLatestPrice()  );
+        String userToken = FirebaseAuth.getInstance().getCurrentUser().getUid() ;
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance() ;
+        firebaseDatabase.getReference("UserInfo").child(userToken).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                }
+                else {
+
+                    swipeRefreshLayout.setRefreshing(true);
+                    for(int i = 0; i < rootActivity.user.portfolioItems.size(); i++){
+                        for(int j = 0 ; j < rootActivity.coins.size() ; j++){
+                            if(rootActivity.user.portfolioItems.get(i).getSymbol().equals( rootActivity.coins.get(j).getSymbol() )){
+                                rootActivity.user.portfolioItems.get(i).setLatestPrice( rootActivity.coins.get(j).getLatestPrice()  );
+                            }
+                        }
+                    }
+                    swipeRefreshLayout.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            if(portfolioAdapter == null){
+                                for (int i = 0; i < rootActivity.user.portfolioItems.size(); i++)
+                                    recyclerMenuStatus.add(false);
+                                portfolioAdapter = new PortfolioAdapter(recyclerMenuStatus, rootActivity);
+                                portfolioItemRecyclerView.setAdapter(portfolioAdapter);
+                            }
+                            else
+                                portfolioAdapter.notifyDataSetChanged();
+                        }
+                    },2000);
+
+                    swipeRefreshLayout.setRefreshing(false);
+
                 }
             }
-            //rootActivity.user.portfolioItems.get(i).setLatestPrice(rand.nextDouble() * 100);
-        }
-        if(portfolioAdapter == null){
-            portfolioAdapter = new PortfolioAdapter(recyclerMenuStatus, rootActivity);
-            portfolioItemRecyclerView.setAdapter(portfolioAdapter);
-        }
-        else portfolioAdapter.notifyDataSetChanged();
-        swipeRefreshLayout.setRefreshing(false);
-//        new Handler().postDelayed(new Runnable() {
-//
-//            @Override
-//            public void run() {
-//
-//            }
-//        }, 2000);
+        });
+
     }
 }

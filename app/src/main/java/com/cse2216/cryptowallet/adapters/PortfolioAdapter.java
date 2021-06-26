@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +23,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cse2216.cryptowallet.R;
 import com.cse2216.cryptowallet.activities.MainActivity;
 import com.cse2216.cryptowallet.classes.domain.PortfolioItem;
+import com.cse2216.cryptowallet.classes.domain.UserInfo;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PortfolioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -35,7 +43,7 @@ public class PortfolioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     String leftSymbol = Character.toString((char)(8605));
 
     Context context;
-    List<PortfolioItem> portfolioItems;
+    ArrayList<PortfolioItem> portfolioItems;
     List<Boolean> recyclerMenuStatus;
 
     private final int SHOW_MENU = 1;
@@ -118,6 +126,34 @@ public class PortfolioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                             else {
                                 dialog.dismiss();
                                 portfolioItems.get(position).setPosition(new_position);
+
+                                // Updating to database
+                                String userToken = FirebaseAuth.getInstance().getCurrentUser().getUid() ;
+                                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance() ;
+                                firebaseDatabase.getReference("UserInfo").child(userToken).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                        if (!task.isSuccessful()) {
+                                            Log.e("firebase", "Error getting data", task.getException());
+                                        }
+                                        else {
+                                            UserInfo dummyUser = task.getResult().getValue(UserInfo.class);
+                                            dummyUser.setPortfolioItems(portfolioItems);
+                                            firebaseDatabase.getReference("UserInfo").child(userToken).setValue(dummyUser);
+                                            Log.d("firebase", dummyUser.toString());
+                                        }
+                                    }
+                                });
+
+
+
+                                // Updated to database
+
+
+
+
+
+
                                 notifyDataSetChanged();
                             }
                         }
@@ -137,6 +173,35 @@ public class PortfolioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 public void onClick(View v) {
                     portfolioItems.remove(position);
                     recyclerMenuStatus.remove(position);
+
+                    // Updating to database
+
+
+                    String userToken = FirebaseAuth.getInstance().getCurrentUser().getUid() ;
+                    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance() ;
+                    firebaseDatabase.getReference("UserInfo").child(userToken).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            if (!task.isSuccessful()) {
+                                Log.e("firebase", "Error getting data", task.getException());
+                            }
+                            else {
+                                UserInfo dummyUser = task.getResult().getValue(UserInfo.class);
+                                dummyUser.setPortfolioItems(portfolioItems);
+                                firebaseDatabase.getReference("UserInfo").child(userToken).setValue(dummyUser);
+                                Log.d("firebase", dummyUser.toString());
+                            }
+                        }
+                    });
+
+
+                    // Updated
+
+
+
+
+
+
                     notifyDataSetChanged();
                 }
             });
