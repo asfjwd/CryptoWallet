@@ -1,6 +1,7 @@
 package com.cse2216.cryptowallet.adapters;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cse2216.cryptowallet.R;
@@ -54,6 +56,7 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.Watc
         return String.format("%.2f", val);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onBindViewHolder(@NonNull @NotNull WatchListAdapter.WatchListViewHolder holder, int pos) {
 
