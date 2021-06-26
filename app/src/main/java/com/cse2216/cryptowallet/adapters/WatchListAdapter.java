@@ -70,6 +70,7 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.Watc
         holder.change_24hr.setText(parseDouble(change_24hr) + " %");
         holder.volume.setText(parseDouble(allCoins.get(position).getVolume()) + " $");
         holder.leftSymbol.setText(leftSymbol);
+        holder.currencySymbol.setText(allCoins.get(position).getSymbol());
         if(change_24hr > 0){
             holder.change_24hr.setTextColor(context.getColor(R.color.positiveGreen));
             holder.arrow.setText(upArrow);
@@ -93,7 +94,7 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.Watc
 
     public class WatchListViewHolder extends RecyclerView.ViewHolder {
         ImageView imgIcon;
-        TextView currencyName, ltp, change_24hr, volume, arrow, leftSymbol;
+        TextView currencyName, ltp, change_24hr, volume, arrow, leftSymbol, currencySymbol;
         public WatchListViewHolder(View itemView) {
             super(itemView);
 
@@ -104,6 +105,7 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.Watc
             volume = itemView.findViewById(R.id.watchlist_volume_id);
             arrow = itemView.findViewById(R.id.watchlist_arrow_id);
             leftSymbol = itemView.findViewById(R.id.watchlist_left_symbol);
+            currencySymbol = itemView.findViewById(R.id.watchlist_currency_symbol);
 
         }
     }

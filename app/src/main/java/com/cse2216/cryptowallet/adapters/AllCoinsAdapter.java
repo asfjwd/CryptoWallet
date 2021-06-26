@@ -77,6 +77,7 @@ public class AllCoinsAdapter extends RecyclerView.Adapter<AllCoinsAdapter.AllCoi
         holder.change_24hr.setText(parseDouble(change_24hr) + " %");
         holder.volume.setText(parseDouble(allCoins.get(position).getVolume())+ " $");
         holder.leftSymbol.setText(leftSymbol);
+        holder.currencySymbol.setText(allCoins.get(position).getSymbol());
         Boolean isInWatchList = false;
         for(Integer watchListItem : watchList){
             if(watchListItem == position){
@@ -149,7 +150,7 @@ public class AllCoinsAdapter extends RecyclerView.Adapter<AllCoinsAdapter.AllCoi
 
     public static class AllCoinsViewHolder extends RecyclerView.ViewHolder {
         ImageView imgIcon;
-        TextView currencyName, ltp, change_24hr, volume, arrow, leftSymbol;
+        TextView currencyName, ltp, change_24hr, volume, arrow, leftSymbol, currencySymbol;
         SwitchMaterial watchlistToggle;
         public AllCoinsViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -161,6 +162,7 @@ public class AllCoinsAdapter extends RecyclerView.Adapter<AllCoinsAdapter.AllCoi
             volume = itemView.findViewById(R.id.all_coins_volume_id);
             arrow = itemView.findViewById(R.id.all_coins_arrow_id);
             leftSymbol = itemView.findViewById(R.id.all_coins_left_symbol);
+            currencySymbol = itemView.findViewById(R.id.all_coins_currency_symbol);
 
             watchlistToggle = itemView.findViewById(R.id.all_coins_watchlist_toggle);
         }

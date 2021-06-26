@@ -150,6 +150,7 @@ public class PortfolioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ((PortfolioViewHolder) holder).gainPercentage.setText(parseDouble(gainPercentage) + " %");
             ((PortfolioViewHolder) holder).gainPercentage.setTypeface(null, Typeface.ITALIC);
             ((PortfolioViewHolder) holder).leftSymbol.setText(leftSymbol);
+            ((PortfolioViewHolder) holder).currencySymbol.setText(portfolioItems.get(position).getSymbol());
             if(gain > 0){
                 ((PortfolioViewHolder) holder).leftSymbol.setScaleY(1);
                 ((PortfolioViewHolder) holder).gain.setTextColor(context.getColor(R.color.positiveGreen));
@@ -205,7 +206,7 @@ public class PortfolioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public class PortfolioViewHolder extends RecyclerView.ViewHolder{
         ImageView imgIcon;
-        TextView buyPrice, ltp, currencyName, position, gain, gainPercentage, arrow, leftSymbol;
+        TextView buyPrice, ltp, currencyName, position, gain, gainPercentage, arrow, leftSymbol, currencySymbol;
 
         public PortfolioViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -218,6 +219,7 @@ public class PortfolioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             gainPercentage = itemView.findViewById(R.id.portfolio_gain_percentage_id);
             arrow = itemView.findViewById(R.id.portfolio_arrow_id);
             leftSymbol = itemView.findViewById(R.id.portfolio_left_symbol);
+            currencySymbol = itemView.findViewById(R.id.portfolio_currency_symbol);
         }
     }
 
