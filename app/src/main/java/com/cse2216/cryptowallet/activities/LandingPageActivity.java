@@ -22,6 +22,11 @@ public class LandingPageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        if(mAuth.getCurrentUser()!=null) {
+            startMainActivity();
+            return;
+        }
         setContentView(R.layout.activity_landing_page);
         LandingPageAdapter landingPageAdapter = new LandingPageAdapter(getSupportFragmentManager(), this);
         viewPager = findViewById(R.id.landing_viewpager);
@@ -29,10 +34,6 @@ public class LandingPageActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.landing_tablayout);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        if(mAuth.getCurrentUser()!=null)
-            startMainActivity();
-
     }
     private void startMainActivity() {
         System.out.println("Starting Activity");

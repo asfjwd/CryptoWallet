@@ -44,14 +44,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+
+        super.onCreate(savedInstanceState);
         FirebaseAuth moth = FirebaseAuth.getInstance();
 
         if(moth.getCurrentUser()==null){
+            Log.d("Login", "User Cache not found , loggin out");
             startLandingActivity();
+            return  ;
         }
         lunarAPI = new LunarAPI(this);
         populateData();
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -119,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
         if(moth.getCurrentUser()==null){
             Log.d("Force", "Forceloggedout");
             startLandingActivity();
+            return;
         }
         doubleBackToExitPressedOnce = false;
     }

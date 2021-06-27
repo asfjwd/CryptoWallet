@@ -52,9 +52,9 @@ public class LunarAPI {
                             for(int coinIndex = 0 ; coinIndex < numberOfCoins ; coinIndex++){
                                 JSONObject jsonCoin = responseData.getJSONObject(coinIndex) ;
                                 Coin coin = new Coin(jsonCoin) ;
-                                Log.d("response" , coin.toString());
+                                //Log.d("response" , coin.toString());
                                 coinArrayList.set(coinIndex,coin);
-                                Log.d("response" , coinArrayList.size() + " Addded ");
+                                //Log.d("response" , coinArrayList.size() + " Addded ");
                             }
 
                             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("AllCoinsList");
