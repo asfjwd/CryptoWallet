@@ -116,6 +116,12 @@ public class PortfolioFragment extends Fragment implements SwipeRefreshLayout.On
                 confirmButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        if(buyingPrice.getText().toString().isEmpty() || quantity.getText().toString().isEmpty()){
+                            Toast.makeText(rootActivity, "One or more fields are empty!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
                         String selectedCoin = autoCompleteTextView.getText().toString();
                         Coin coin = getCoin(selectedCoin);
                         if(coin != null){
@@ -291,7 +297,7 @@ public class PortfolioFragment extends Fragment implements SwipeRefreshLayout.On
                             if(portfolioAdapter == null){
                                 for (int i = 0; i < rootActivity.user.portfolioItems.size(); i++)
                                     recyclerMenuStatus.add(false);
-                                portfolioAdapter = new PortfolioAdapter(recyclerMenuStatus, rootActivity);
+                                portfolioAdapter = new PortfolioAdapter(recyclerMenuStatus, rootActivity, rootView);
                                 portfolioItemRecyclerView.setAdapter(portfolioAdapter);
                             }
                             else

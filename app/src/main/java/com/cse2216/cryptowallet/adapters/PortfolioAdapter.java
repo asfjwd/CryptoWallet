@@ -26,6 +26,7 @@ import com.cse2216.cryptowallet.classes.domain.PortfolioItem;
 import com.cse2216.cryptowallet.classes.domain.UserInfo;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
@@ -45,14 +46,16 @@ public class PortfolioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     Context context;
     ArrayList<PortfolioItem> portfolioItems;
     List<Boolean> recyclerMenuStatus;
+    View view;
 
     private final int SHOW_MENU = 1;
     private final int HIDE_MENU = 2;
 
-    public PortfolioAdapter(List<Boolean> recyclerMenuStatus, MainActivity activity){
+    public PortfolioAdapter(List<Boolean> recyclerMenuStatus, MainActivity activity, View view){
         this.portfolioItems = activity.user.portfolioItems;
         this.recyclerMenuStatus = recyclerMenuStatus;
         this.context = activity;
+        this.view = view;
     }
 
     @Override
@@ -69,13 +72,10 @@ public class PortfolioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         View v;
         if(viewType==SHOW_MENU){
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View view = inflater.inflate(R.layout.recycler_menu, parent, false);
-            return new MenuViewHolder(view);
+            return new MenuViewHolder(inflater.inflate(R.layout.recycler_menu, parent, false));
         }else{
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View view = inflater.inflate(R.layout.portfolio_item_layout, parent, false);
-            return new PortfolioViewHolder(view);
-
+            return new PortfolioViewHolder(inflater.inflate(R.layout.portfolio_item_layout, parent, false));
         }
     }
 
@@ -96,6 +96,7 @@ public class PortfolioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof MenuViewHolder){
+            PortfolioItem item = portfolioItems.get(position);
             ((MenuViewHolder) holder).back.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -119,6 +120,13 @@ public class PortfolioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     confirmButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+
+                            if(amount.getText().toString().isEmpty()){
+                                Toast.makeText(context, "Field is Empty!", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+
+                            double old_position = portfolioItems.get(position).getPosition();
                             double new_position = (portfolioItems.get(position).getPosition() - Double.parseDouble(amount.getText().toString()));
                             if(new_position < 0){
                                 Toast.makeText(context, "Your position is smaller than " + amount.getText(), Toast.LENGTH_SHORT).show();
@@ -131,6 +139,17 @@ public class PortfolioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                 updateDatabase();
                                 // Updated to database
                                 notifyDataSetChanged();
+                                closeMenu();
+
+                                Snackbar.make(view, "Cashout completed.", Snackbar.LENGTH_LONG)
+                                    .setAction("Undo", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            portfolioItems.get(position).setPosition(old_position);
+                                            updateDatabase();
+                                            notifyDataSetChanged();
+                                        }
+                                    }).setActionTextColor(context.getColor(R.color.colorPrimary)).show();
                             }
                             else {
                                 dialog.dismiss();
@@ -138,6 +157,17 @@ public class PortfolioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                 recyclerMenuStatus.remove(position);
                                 updateDatabase();
                                 notifyDataSetChanged();
+                                closeMenu();
+
+                                Snackbar.make(view, "Cashout completed.", Snackbar.LENGTH_LONG)
+                                    .setAction("Undo", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            portfolioItems.add(position, item);
+                                            recyclerMenuStatus.add(position, false);
+                                            notifyDataSetChanged();
+                                        }
+                                    }).setActionTextColor(context.getColor(R.color.colorPrimary)).show();
                             }
                         }
                     });
@@ -146,6 +176,7 @@ public class PortfolioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         @Override
                         public void onClick(View v) {
                             dialog.dismiss();
+                            closeMenu();
                         }
                     });
                 }
@@ -160,6 +191,18 @@ public class PortfolioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     updateDatabase();
                     // Updated
                     notifyDataSetChanged();
+                    closeMenu();
+
+                    Snackbar.make(view, "Item deleted.", Snackbar.LENGTH_LONG)
+                        .setAction("Undo", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                portfolioItems.add(position, item);
+                                recyclerMenuStatus.add(position, false);
+                                updateDatabase();
+                                notifyDataSetChanged();
+                            }
+                        }).setActionTextColor(context.getColor(R.color.colorPrimary)).show();
                 }
             });
         }
