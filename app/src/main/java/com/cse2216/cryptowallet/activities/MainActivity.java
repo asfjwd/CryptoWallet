@@ -54,38 +54,42 @@ public class MainActivity extends AppCompatActivity {
             return  ;
         }
         lunarAPI = new LunarAPI(this);
-        populateData();
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
         MainPageAdapter MainPageAdapter = new MainPageAdapter(this, getSupportFragmentManager());
-                ViewPager viewPager = findViewById(R.id.view_pager);
-                viewPager.setAdapter(MainPageAdapter);
-                viewPager.setOffscreenPageLimit(3);
-                TabLayout tabs = findViewById(R.id.tabs);
-                tabs.setupWithViewPager(viewPager);
-                tabs.getTabAt(1).select();
-                FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                try{
-                    Log.d("intent",mAuth.getCurrentUser().getEmail());
-                    Log.d("intent" , getIntent().getExtras().getString("loginType"));
-                }
-                catch(Exception e) {
-
-                }
-                lunarAPI.updateCoins();
+        ViewPager viewPager = findViewById(R.id.view_pager);
+        viewPager.setAdapter(MainPageAdapter);
+        viewPager.setOffscreenPageLimit(3);
+        TabLayout tabs = findViewById(R.id.tabs);
+        tabs.setupWithViewPager(viewPager);
+        tabs.getTabAt(1).select();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        try{
+            Log.d("intent",mAuth.getCurrentUser().getEmail());
+            Log.d("intent" , getIntent().getExtras().getString("loginType"));
+        }
+        catch(Exception e) {
+            Log.d("login","Error in getting data");
+            startLandingActivity();
+        }
+        populateData();
+        lunarAPI.updateCoins();
     }
     private void populateData() {
 //        hardcode or from database
         user = new UserInfo("x","x",new ArrayList<PortfolioItem>(),new ArrayList <Integer >());
         String userToken = FirebaseAuth.getInstance().getCurrentUser().getUid() ;
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance() ;
+        Log.d("firebase" ,  "requesting info from token"+userToken);
         firebaseDatabase.getReference("UserInfo").child(userToken).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if (!task.isSuccessful()) {
-                    Log.e("firebase", "Error getting data", task.getException());
+                    Log.e("firebase", "Error getting data, client maybe dont have cache", task.getException());
+                    startLandingActivity();
+                    return;
                 }
                 else {
                     UserInfo dummyUser = task.getResult().getValue(UserInfo.class);
