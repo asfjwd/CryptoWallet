@@ -57,10 +57,10 @@ public class AllCoinsAdapter extends RecyclerView.Adapter<AllCoinsAdapter.AllCoi
 
         final double highLimit = 1e8, lowLimit = 1e5;
 
-        if(val > highLimit){
+        if(Math.abs(val) > highLimit){
             return String.format("%.2fM", val / 1000000.0);
         }
-        else if(val > lowLimit){
+        else if(Math.abs(val) > lowLimit){
             return String.format("%.2fK", val / 1000.0);
         }
         return String.format("%.2f", val);

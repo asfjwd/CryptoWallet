@@ -2,7 +2,6 @@ package com.cse2216.cryptowallet.adapters;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,10 +46,10 @@ public class WatchListAdapter extends RecyclerView.Adapter<WatchListAdapter.Watc
 
         final double highLimit = 1e8, lowLimit = 1e5;
 
-        if(val > highLimit){
+        if(Math.abs(val) > highLimit){
             return String.format("%.2fM", val / 1000000.0);
         }
-        else if(val > lowLimit){
+        else if(Math.abs(val) > lowLimit){
             return String.format("%.2fK", val / 1000.0);
         }
         return String.format("%.2f", val);
