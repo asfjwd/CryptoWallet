@@ -128,55 +128,15 @@ public class PortfolioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                 portfolioItems.get(position).setPosition(new_position);
 
                                 // Updating to database
-                                String userToken = FirebaseAuth.getInstance().getCurrentUser().getUid() ;
-                                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance() ;
-                                firebaseDatabase.getReference("UserInfo").child(userToken).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                        if (!task.isSuccessful()) {
-                                            Log.e("firebase", "Error getting data", task.getException());
-                                        }
-                                        else {
-                                            UserInfo dummyUser = task.getResult().getValue(UserInfo.class);
-                                            dummyUser.setPortfolioItems(portfolioItems);
-                                            firebaseDatabase.getReference("UserInfo").child(userToken).setValue(dummyUser);
-                                            Log.d("firebase", dummyUser.toString());
-                                        }
-                                    }
-                                });
-
-
-
+                                updateDatabase();
                                 // Updated to database
-
-
-
-
-
-
                                 notifyDataSetChanged();
                             }
                             else {
                                 dialog.dismiss();
                                 portfolioItems.remove(position);
                                 recyclerMenuStatus.remove(position);
-
-                                String userToken = FirebaseAuth.getInstance().getCurrentUser().getUid() ;
-                                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance() ;
-                                firebaseDatabase.getReference("UserInfo").child(userToken).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                        if (!task.isSuccessful()) {
-                                            Log.e("firebase", "Error getting data", task.getException());
-                                        }
-                                        else {
-                                            UserInfo dummyUser = task.getResult().getValue(UserInfo.class);
-                                            dummyUser.setPortfolioItems(portfolioItems);
-                                            firebaseDatabase.getReference("UserInfo").child(userToken).setValue(dummyUser);
-                                            Log.d("firebase", dummyUser.toString());
-                                        }
-                                    }
-                                });
+                                updateDatabase();
                                 notifyDataSetChanged();
                             }
                         }
@@ -196,35 +156,9 @@ public class PortfolioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 public void onClick(View v) {
                     portfolioItems.remove(position);
                     recyclerMenuStatus.remove(position);
-
                     // Updating to database
-
-
-                    String userToken = FirebaseAuth.getInstance().getCurrentUser().getUid() ;
-                    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance() ;
-                    firebaseDatabase.getReference("UserInfo").child(userToken).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-                            if (!task.isSuccessful()) {
-                                Log.e("firebase", "Error getting data", task.getException());
-                            }
-                            else {
-                                UserInfo dummyUser = task.getResult().getValue(UserInfo.class);
-                                dummyUser.setPortfolioItems(portfolioItems);
-                                firebaseDatabase.getReference("UserInfo").child(userToken).setValue(dummyUser);
-                                Log.d("firebase", dummyUser.toString());
-                            }
-                        }
-                    });
-
-
+                    updateDatabase();
                     // Updated
-
-
-
-
-
-
                     notifyDataSetChanged();
                 }
             });
@@ -293,6 +227,26 @@ public class PortfolioAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public int getItemCount() {
         return portfolioItems.size();
+    }
+
+
+    private void updateDatabase(){
+        String userToken = FirebaseAuth.getInstance().getCurrentUser().getUid() ;
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance() ;
+        firebaseDatabase.getReference("UserInfo").child(userToken).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data; Portfolio Update error", task.getException());
+                }
+                else {
+                    UserInfo dummyUser = task.getResult().getValue(UserInfo.class);
+                    dummyUser.setPortfolioItems(portfolioItems);
+                    firebaseDatabase.getReference("UserInfo").child(userToken).setValue(dummyUser);
+                    Log.d("firebase", dummyUser.toString());
+                }
+            }
+        });
     }
 
     public class PortfolioViewHolder extends RecyclerView.ViewHolder{
