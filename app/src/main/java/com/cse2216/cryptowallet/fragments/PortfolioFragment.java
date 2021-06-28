@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +44,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class PortfolioFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
@@ -70,7 +68,7 @@ public class PortfolioFragment extends Fragment implements SwipeRefreshLayout.On
         swipeRefreshLayout.setOnRefreshListener(this);
         portfolioItemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         portfolioItemRecyclerView.setHasFixedSize(true);
-        updateList();
+        updateList(2000);
         setupTouchSwipe();
         processFloatingButton();
         Log.d("portStatus","testing");
@@ -156,7 +154,8 @@ public class PortfolioFragment extends Fragment implements SwipeRefreshLayout.On
                             });
                             // Update ends
                             // Updating UI
-                            updateList();
+                            portfolioAdapter.notifyDataSetChanged();
+                            updateList(500);
 
                         }
                         else {
@@ -223,6 +222,9 @@ public class PortfolioFragment extends Fragment implements SwipeRefreshLayout.On
 
             @Override
             public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
+                if(viewHolder.getAdapterPosition() == -1) return;
+
                 if(recyclerMenuStatus.get(viewHolder.getAdapterPosition()) == false && dX > 0) return;
                 if(dX > 0) background = new ColorDrawable(getResources().getColor(R.color.white));
                 else background = new ColorDrawable(getResources().getColor(R.color.colorAccent));
@@ -259,10 +261,10 @@ public class PortfolioFragment extends Fragment implements SwipeRefreshLayout.On
 
     @Override
     public void onRefresh() {
-        updateList();
+        updateList(500);
     }
 
-    private void updateList() {
+    private void updateList(int waitTime) {
         rootActivity.lunarAPI.updateCoins();
         String userToken = FirebaseAuth.getInstance().getCurrentUser().getUid() ;
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance() ;
@@ -295,7 +297,7 @@ public class PortfolioFragment extends Fragment implements SwipeRefreshLayout.On
                             else
                                 portfolioAdapter.notifyDataSetChanged();
                         }
-                    },2000);
+                    },waitTime);
 
                     swipeRefreshLayout.setRefreshing(false);
 
