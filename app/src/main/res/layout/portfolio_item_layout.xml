@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="22dp"
                 android:id="@+id/currency_name"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="4dp"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:text="Bitcoin"
@@ -136,9 +136,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginLeft="20dp"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="6dp"
+            android:layout_marginRight="4dp"
             >
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="wrap_content"
