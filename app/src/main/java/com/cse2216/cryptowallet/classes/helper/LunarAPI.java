@@ -31,13 +31,6 @@ public class LunarAPI {
             init(numberOfCoins);
         updateCoins();
     }
-
-    private void init(int numberOfCoins){
-        for(int coinIndex = 0 ; coinIndex < numberOfCoins ;coinIndex++){
-            coinArrayList.add(new Coin("","","",0,0.0,0.0,0.0));
-        }
-    }
-
     public void updateCoins(){
 
         String url = "https://api.lunarcrush.com/v2?data=assets&key=e5p6u53g6y5kqvapl6nurj&symbol=BTC,USDT,BNB,ETH,LTC,ADA,DOT,BCH,XLM,USDC";
@@ -56,16 +49,11 @@ public class LunarAPI {
                                 coinArrayList.set(coinIndex,coin);
                                 //Log.d("response" , coinArrayList.size() + " Addded ");
                             }
-
                             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("AllCoinsList");
                             reference.setValue(coinArrayList);
-
-
-
-
                         }
                         catch (Exception e){
-                            Log.d("response" , "Error");
+                            Log.d("response" , "Error on response in Lunar API");
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -73,14 +61,19 @@ public class LunarAPI {
                     @Override
                     public void onErrorResponse(VolleyError error) {
 
-                        Log.d("response" , "ERROR") ;
+                        Log.d("response" , "ERROR on response in Lunar APi") ;
 
                     }
                 });
         queue.add(jsonObjectRequest) ;
-        Log.d("response" , coinArrayList.size() + " LAST ");
+        Log.d("response" , coinArrayList.size() + " number of coins filled up ");
     }
     public ArrayList<Coin> getCoinArrayList() {
         return coinArrayList;
+    }
+    private void init(int numberOfCoins){
+        for(int coinIndex = 0 ; coinIndex < numberOfCoins ;coinIndex++){
+            coinArrayList.add(new Coin("","","",0,0.0,0.0,0.0));
+        }
     }
 }

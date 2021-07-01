@@ -1,6 +1,7 @@
 package com.cse2216.cryptowallet.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,10 +47,13 @@ public class AllCoinsFragment extends Fragment implements SwipeRefreshLayout.OnR
         updateList(2000);
         return rootView;
     }
-
+    @Override
+    public void onRefresh() {
+        updateList(100);
+    }
     private void updateList(int waitTime) {
-        rootActivity.lunarAPI.updateCoins();
 
+        rootActivity.lunarAPI.updateCoins();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("AllCoinsList");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -69,13 +73,10 @@ public class AllCoinsFragment extends Fragment implements SwipeRefreshLayout.OnR
 
             @Override
             public void onCancelled(@NonNull @NotNull DatabaseError error) {
-
+                Log.d("AllCoinsFragment" ,"Error in database listener" );
             }
         });
     }
 
-    @Override
-    public void onRefresh() {
-        updateList(100);
-    }
+
 }

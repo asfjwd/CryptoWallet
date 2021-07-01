@@ -41,95 +41,6 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     boolean doubleBackToExitPressedOnce = false;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
-
-        super.onCreate(savedInstanceState);
-        FirebaseAuth moth = FirebaseAuth.getInstance();
-
-        if(moth.getCurrentUser()==null){
-            Log.d("Login", "User Cache not found , loggin out");
-            startLandingActivity();
-            return  ;
-        }
-        lunarAPI = new LunarAPI(this);
-        setContentView(R.layout.activity_main);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(null);
-        MainPageAdapter MainPageAdapter = new MainPageAdapter(this, getSupportFragmentManager());
-        ViewPager viewPager = findViewById(R.id.view_pager);
-        viewPager.setAdapter(MainPageAdapter);
-        viewPager.setOffscreenPageLimit(3);
-        TabLayout tabs = findViewById(R.id.tabs);
-        tabs.setupWithViewPager(viewPager);
-        tabs.getTabAt(1).select();
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        try{
-            Log.d("intent",mAuth.getCurrentUser().getEmail());
-            Log.d("intent" , getIntent().getExtras().getString("loginType"));
-        }
-        catch(Exception e) {
-            Log.d("login","Error in getting data");
-            startLandingActivity();
-        }
-        populateData();
-        lunarAPI.updateCoins();
-    }
-    private void populateData() {
-//        hardcode or from database
-        user = new UserInfo("x","x",new ArrayList<PortfolioItem>(),new ArrayList <Integer >());
-        String userToken = FirebaseAuth.getInstance().getCurrentUser().getUid() ;
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance() ;
-        Log.d("firebase" ,  "requesting info from token"+userToken);
-        firebaseDatabase.getReference("UserInfo").child(userToken).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (!task.isSuccessful()) {
-                    Log.e("firebase", "Error getting data, client maybe dont have cache", task.getException());
-                    startLandingActivity();
-                    return;
-                }
-                else {
-                    UserInfo dummyUser = task.getResult().getValue(UserInfo.class);
-                    user.setEmail(dummyUser.getEmail());
-                    user.setToken(dummyUser.getToken());
-                    user.setPortfolioItems(dummyUser.getPortfolioItems());
-                    user.setWatchList(dummyUser.getWatchList());
-//                    AllCoinsFragment.allCoinsItemRecyclerView.setAdapter(new AllCoinsAdapter(MainActivity.this));
-                    firebaseDatabase.getReference("UserInfo").child(userToken).setValue(dummyUser);
-                    Log.d("firebase", dummyUser.toString());
-                }
-            }
-        });
-
-
-        //Log.d("populate" , user.toString()) ;
-        coins = lunarAPI.getCoinArrayList();
-    }
-
-    private void startLandingActivity() {
-       // System.out.println("Starting Activity");
-        Intent intent = new Intent( MainActivity.this , LandingPageActivity.class);
-        FirebaseAuth mAuth= FirebaseAuth.getInstance();
-        if(mAuth.getCurrentUser()!=null)
-            mAuth.signOut();
-        intent.putExtra("loginType", "loggedout"); //sending email to MainActivity
-        startActivity(intent);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        FirebaseAuth moth = FirebaseAuth.getInstance();
-        if(moth.getCurrentUser()==null){
-            Log.d("Force", "Forceloggedout");
-            startLandingActivity();
-            return;
-        }
-        doubleBackToExitPressedOnce = false;
-    }
 
     @Override
     public void onBackPressed() {
@@ -167,4 +78,86 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        FirebaseAuth moth = FirebaseAuth.getInstance();
+        if(moth.getCurrentUser()==null){
+            Log.d("Login", "User Cache not found , logging out");
+            startLandingActivity();
+            return  ;
+        }
+
+        setContentView(R.layout.activity_main);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
+        MainPageAdapter MainPageAdapter = new MainPageAdapter(this, getSupportFragmentManager());
+        ViewPager viewPager = findViewById(R.id.view_pager);
+        viewPager.setAdapter(MainPageAdapter);
+        viewPager.setOffscreenPageLimit(3);
+        TabLayout tabs = findViewById(R.id.tabs);
+        tabs.setupWithViewPager(viewPager);
+        tabs.getTabAt(1).select();
+
+        lunarAPI = new LunarAPI(this);
+        lunarAPI.updateCoins();
+        populateData();
+
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        FirebaseAuth moth = FirebaseAuth.getInstance();
+        if(moth.getCurrentUser()==null){
+            Log.d("Force", "Force loggedout on resum");
+            startLandingActivity();
+            return;
+        }
+        doubleBackToExitPressedOnce = false;
+        lunarAPI.updateCoins();
+    }
+
+    private void populateData() {
+//        hardcode or from database
+        user = new UserInfo("x","x",new ArrayList<PortfolioItem>(),new ArrayList <Integer >());
+        String userToken = FirebaseAuth.getInstance().getCurrentUser().getUid() ;
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance() ;
+        Log.d("firebase" ,  "requesting info from token"+userToken);
+        firebaseDatabase.getReference("UserInfo").child(userToken).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data, client maybe don't have cache, forcing logout", task.getException());
+                    startLandingActivity();
+                    return;
+                }
+                else {
+                    UserInfo dummyUser = task.getResult().getValue(UserInfo.class);
+                    user.setEmail(dummyUser.getEmail());
+                    user.setToken(dummyUser.getToken());
+                    user.setPortfolioItems(dummyUser.getPortfolioItems());
+                    user.setWatchList(dummyUser.getWatchList());
+                    firebaseDatabase.getReference("UserInfo").child(userToken).setValue(dummyUser);
+                    Log.d("firebase", dummyUser.toString());
+                }
+            }
+        });
+        coins = lunarAPI.getCoinArrayList();
+    }
+
+    private void startLandingActivity() {
+        // System.out.println("Starting Activity");
+        Intent intent = new Intent( MainActivity.this , LandingPageActivity.class);
+        FirebaseAuth mAuth= FirebaseAuth.getInstance();
+        if(mAuth.getCurrentUser()!=null)
+            mAuth.signOut();
+        intent.putExtra("loginType", "loggedout"); //sending email to MainActivity
+        startActivity(intent);
+    }
+
+
+
 }

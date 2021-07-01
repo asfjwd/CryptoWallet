@@ -122,26 +122,8 @@ public class AllCoinsAdapter extends RecyclerView.Adapter<AllCoinsAdapter.AllCoi
                     }
                     watchList.remove(idxToRemove);
                 }
+                updateWatchlistDatabase();
 
-
-
-
-                String userToken = FirebaseAuth.getInstance().getCurrentUser().getUid() ;
-                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance() ;
-                firebaseDatabase.getReference("UserInfo").child(userToken).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        if (!task.isSuccessful()) {
-                            Log.e("firebase", "Error getting data", task.getException());
-                        }
-                        else {
-                            UserInfo dummyUser = task.getResult().getValue(UserInfo.class);
-                            dummyUser.setWatchList(watchList);
-                            firebaseDatabase.getReference("UserInfo").child(userToken).setValue(dummyUser);
-                            Log.d("firebase", dummyUser.toString());
-                        }
-                    }
-                });
             }
         });
     }
@@ -166,8 +148,26 @@ public class AllCoinsAdapter extends RecyclerView.Adapter<AllCoinsAdapter.AllCoi
             arrow = itemView.findViewById(R.id.all_coins_arrow_id);
             leftSymbol = itemView.findViewById(R.id.all_coins_left_symbol);
             currencySymbol = itemView.findViewById(R.id.all_coins_currency_symbol);
-
             watchlistToggle = itemView.findViewById(R.id.all_coins_watchlist_toggle);
         }
+    }
+
+    private void updateWatchlistDatabase(){
+        String userToken = FirebaseAuth.getInstance().getCurrentUser().getUid() ;
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance() ;
+        firebaseDatabase.getReference("UserInfo").child(userToken).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                }
+                else {
+                    UserInfo dummyUser = task.getResult().getValue(UserInfo.class);
+                    dummyUser.setWatchList(watchList);
+                    firebaseDatabase.getReference("UserInfo").child(userToken).setValue(dummyUser);
+                    Log.d("firebase", dummyUser.toString());
+                }
+            }
+        });
     }
 }
