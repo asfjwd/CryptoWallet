@@ -49,6 +49,10 @@ public class WatchlistFragment extends Fragment implements SwipeRefreshLayout.On
             updateList();
         }
     }
+    @Override
+    public void onRefresh() {
+        updateList();
+    }
 
     private void updateList() {
         swipeRefreshLayout.setRefreshing(true);
@@ -61,8 +65,5 @@ public class WatchlistFragment extends Fragment implements SwipeRefreshLayout.On
         swipeRefreshLayout.setRefreshing(false);
     }
 
-    @Override
-    public void onRefresh() {
-        updateList();
-    }
+
 }

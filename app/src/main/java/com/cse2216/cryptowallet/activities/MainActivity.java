@@ -22,6 +22,7 @@ import com.cse2216.cryptowallet.classes.domain.Coin;
 import com.cse2216.cryptowallet.classes.domain.PortfolioItem;
 import com.cse2216.cryptowallet.classes.domain.UserInfo;
 import com.cse2216.cryptowallet.classes.helper.LunarAPI;
+import com.cse2216.cryptowallet.fragments.WatchlistFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;

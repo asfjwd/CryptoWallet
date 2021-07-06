@@ -1,9 +1,6 @@
 # CryptoWallet
 
-# Jaian accessed git
+Hello , This project was built on a educational purpose . 
 
-# Jaian branch jaian-testing
-=======
-# jaian edidting
+#Built by, Asif Jawad and Jaian Ahnaf Rahim
 
-Asif changing readme.
